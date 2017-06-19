@@ -56,7 +56,12 @@
 						echo "$str[$j]";
 						echo "</td>";
 					}
-					echo "<td>Delete</td>";
+					echo "<td>
+						<form method =\"POST\" action=\"deleteFile.php\">
+							<input type=\"submit\" value=\"Delete\" />
+							<input type=\"hidden\" name=\"Id\" value=\"$str[0]_$str[1]_$str[2]_$str[3]_$str[4]\">
+						</form>
+					</td>";
 					echo "</tr>";
 				}
 			}
