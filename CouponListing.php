@@ -32,174 +32,41 @@
     </thead>
     <tbody id="results">
         <!-- this will be auto-populated -->
+		<?php
+			ini_set('display_errors', 'On');
+			error_reporting(E_ALL);
+			error_reporting(E_ALL | E_STRICT);
+
+			$dir = 'uploads/';
+			$files = scandir($dir);
+
+			showResults($files);
+
+			function showResults($files){
+				$str;
+				$unencodedUrl;
+				$encodedUrl;
+				$html;
+				
+				for($i = 2; $i < count($files); $i++){
+					echo "<tr>";
+					$str = explode("_", $files[$i]);
+					for($j = 0; $j < 4; $j++){
+						echo "<td>";
+						echo "$str[$j]";
+						echo "</td>";
+					}
+					echo "<td>Delete</td>";
+					echo "</tr>";
+				}
+			}
+			?>
     </tbody>
 </table>
 <br><br>
 <a href="UploadCoupon.php">Upload Coupon</a><br>
 
-
 <?php include 'footer.php'; ?>
-
-
-<script>
-/*var arr = [
-    {
-        merchant: 'Walmart',
-        expirationDate: '2017-06-13',
-        deal: '10% off',
-		notes: ''
-    },
-    {
-        merchant: 'Bestbuy',
-        expirationDate: '2017-06-14',
-        deal: 'free tv',
-		notes: 'if you buy another tv'
-    },
-    {
-        merchant: 'Circuitcity',
-        expirationDate: '2016-07-08',
-        deal: '$5 off',
-		notes: ''
-    }
-];*/
-
-<?php
-$dir = 'uploads/';
-$files = scandir($dir);
-/*$array[];
-$string;
-for($i = 0; $i < count($files); $i++){
-	$string = explode("_", $files[$i]);
-	$array[] = array("merchant" => $string[0],
-					"expirationDate" => $string[1],
-					"deal" => $string[2],
-					"notes" => $string[3]);
-}*/	
-$js_array = json_encode($files);
-echo "var arr = ". $js_array . ";\n";
-/*$js_array = json_encode($array);
-echo "var arr = " . $js_array . ";\n";*/
-?>
-/*
-$(function() {
-    $('#headings th').click(function() {
-        var id = $(this).attr('id');
-        var asc = (!$(this).attr('asc')); // switch the order, true if not set
-        
-        // set asc="asc" when sorted in ascending order
-        $('#headings th').each(function() {
-            $(this).removeAttr('asc');
-        });
-        if (asc) $(this).attr('asc', 'asc');
-        
-        sortResults(id, asc);
-    });
-        
-    showResults();
-});
-
-function sortResults(prop, asc) {
-    arr = arr.sort(function(a, b) {
-        if (asc) return (a[prop] > b[prop]);
-        else return (b[prop] > a[prop]);
-    });
-    showResults();
-}
-*/
-showResults();
-function showResults () {
-	var str;
-	var unencodedUrl;
-	var encodedUrl;
-    var html = '';
-	/*
-    for (var e in arr) {
-		str = e.split('_');
-        html += '<tr>'
-			+'<td>'+str[e].merchant+'</td>'
-            //+'<td>'+arr[e].merchant+'</td>'
-            // +'<td>'+arr[e].expirationDate+'</td>'
-            // +'<td>'+arr[e].deal+'</td>'
-			// +'<td>'+arr[e].notes+'</td>'
-        +'</tr>';
-    }*/
-	
-	for(var i = 2; i < arr.length; i++){
-		html += '<tr>';
-		str = arr[i].split('_');
-		unencodedUrl = "uploads/"+str[0]+"_"+str[1]+"_"+str[2]+"_"+str[3]+"_"+str[4];
-		encodedUrl = encodeURI(unencodedUrl);
-
-		for(var j = 0; j < 4; j++){
-			if(j==0){
-				html += '<td><a href='+encodedUrl+'>'+str[j]+'</td>';
-			}
-			else{
-				html += '<td>'+str[j]+'</td>';
-			}
-			
-			
-			
-		}
-		+'</tr>';
-	}
-    $('#results').html(html);
-}
-function sortTable(n) {
-  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-  table = document.getElementById("myTable2");
-  switching = true;
-  //Set the sorting direction to ascending:
-  dir = "asc"; 
-  /*Make a loop that will continue until
-  no switching has been done:*/
-  while (switching) {
-    //start by saying: no switching is done:
-    switching = false;
-    rows = table.getElementsByTagName("TR");
-    /*Loop through all table rows (except the
-    first, which contains table headers):*/
-    for (i = 1; i < (rows.length - 1); i++) {
-      //start by saying there should be no switching:
-      shouldSwitch = false;
-      /*Get the two elements you want to compare,
-      one from current row and one from the next:*/
-      x = rows[i].getElementsByTagName("TD")[n];
-      y = rows[i + 1].getElementsByTagName("TD")[n];
-      /*check if the two rows should switch place,
-      based on the direction, asc or desc:*/
-      if (dir == "asc") {
-        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-          //if so, mark as a switch and break the loop:
-          shouldSwitch= true;
-          break;
-        }
-      } else if (dir == "desc") {
-        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-          //if so, mark as a switch and break the loop:
-          shouldSwitch= true;
-          break;
-        }
-      }
-    }
-    if (shouldSwitch) {
-      /*If a switch has been marked, make the switch
-      and mark that a switch has been done:*/
-      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-      switching = true;
-      //Each time a switch is done, increase this count by 1:
-      switchcount ++; 
-    } else {
-      /*If no switching has been done AND the direction is "asc",
-      set the direction to "desc" and run the while loop again.*/
-      if (switchcount == 0 && dir == "asc") {
-        dir = "desc";
-        switching = true;
-      }
-    }
-  }
-}
-</script>
 
 </body>
 </html>
