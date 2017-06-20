@@ -52,9 +52,19 @@
 					echo "<tr>";
 					$str = explode("_", $files[$i]);
 					for($j = 0; $j < 4; $j++){
-						echo "<td>";
-						echo "$str[$j]";
-						echo "</td>";
+						if($j == 0){
+							$unencodedUrl = "uploads/" . $str[0] . "_" . $str[1] . "_" . $str[2] . "_" . $str[3] . "_" . $str[4];
+							$encodedUrl = htmlentities($unencodedUrl);
+							echo "<td>";
+							echo "<a href=\"" . $encodedUrl . "\">" . $str[0];
+							echo "</td>";
+						}
+						else{
+							echo "<td>";
+							echo "$str[$j]";
+							echo "</td>";
+						}
+						
 					}
 					echo "<td>
 						<form method =\"POST\" action=\"deleteFile.php\">
