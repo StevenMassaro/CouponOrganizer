@@ -45,6 +45,13 @@ if ($uploadOk == 0) {
     }
 }
 
+echo "<br><br><a href=\"UploadCoupon.php\">Upload Coupon</a><br>";
+echo "<a href=\"CouponListing.php\">Coupon Listing</a><br>";
+
+
+
+include 'footer.php';
+
 function validateFileName($file){
 	$file = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '', $file);
 	$file = mb_ereg_replace("([\.]{2,})", '', $file);

@@ -19,6 +19,10 @@
     <input type="submit" value="Upload coupon" name="submit">
 </form>
 
+<?php
+echo "<br><br><a href=\"CouponListing.php\">Coupon Listing</a><br>";
+?>
+
 <?php include 'footer.php'; ?>
 
 </body>
