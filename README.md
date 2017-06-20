@@ -20,7 +20,7 @@ Download the repo. Move the contents to your webserver's wwwroot location. Creat
 I've successfully used this program on the following webservers:
 - Microsoft IIS 7.5
 - Apache (unsure of version, will update later)
-
+---
 #### To do
 - ~~Reenable the sorting functionality~~
 - ~~Create garbageCollection function that erases all coupons which have expired~~
