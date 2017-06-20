@@ -14,4 +14,4 @@ I've successfully used this program on the following webservers:
 #### To do
 - ~~Reenable the sorting functionality~~
 - Create garbageCollection function that erases all coupons which have expired
-- Change the listing page so that links are displayed rather than static text (this will allow coupons to be downloaded from the interface)
+- ~~Change the listing page so that links are displayed rather than static text (this will allow coupons to be downloaded from the interface)~~
