@@ -3,6 +3,8 @@ This is an extrememly lightweight program which runs on a simple webserver and a
 
 This system is unique because it does not use any database systems to keep track of the coupons and their relevant information. Rather, when you upload a coupon through the web interface, the file name is changed to reflect the information that you input about the merchant, expiration date, etc. This allows for an extremely lightweight interface that only requires a PHP capable webserver.
 
+View a simple, non interactive version of the coupon organizer [here](https://stevenmassaro.github.io/CouponOrganizer/SampleSite/index.html). (Note that uploading the site to a PHP capable webserver is crucial to allow the site to function as designed, this is merely a sample site to show the basic functionality).
+
 ## Advantages
 - No SQL or any type of database needed
 - Extremely lightweight, unless the website is being accessed there is nothing running on the server
