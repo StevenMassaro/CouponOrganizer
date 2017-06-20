@@ -29,4 +29,4 @@ I've successfully used this program on the following webservers:
 - ~~Create garbageCollection function that erases all coupons which have expired~~
 - ~~Change the listing page so that links are displayed rather than static text (this will allow coupons to be downloaded from the interface)~~
 - Allow percent symbol (%) to be displayed and stored in file name
-- Create sample site and load to Github
+- ~~Create sample site and load to Github~~
