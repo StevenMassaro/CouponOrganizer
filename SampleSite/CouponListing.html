@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coupons Listing</title>
+	<style>
+	table {
+		border-collapse: collapse;
+		text-align: left;
+	}
+
+	table, th, td {
+		padding: 5px;
+		border: 1px solid black;
+	}
+	</style>
+	
+  <style type="text/css">
+:root #content > #right > .dose > .dosesingle,
+:root #content > #center > .dose > .dosesingle,
+:root #header + #content > #left > #rlblock_left
+{ display: none !important; }</style></head>
+<body>
+<!--onload="clickExpirationDate()"-->
+
+
+<h1>Coupons</h1>
+0 expired coupons have been deleted.<br><br>
+<table id="myTable2">
+    <thead id="headings">
+        <tr>
+            <th onclick="sortTable(0)" id="merchant">Merchant</th>
+            <th onclick="sortTable(1)" id="expirationDate">Expiration Date</th>
+            <th onclick="sortTable(2)" id="deal">Deal</th>
+			<th onclick="sortTable(3)" id="notes">Notes</th>
+        </tr>
+    </thead>
+    <tbody id="results">
+        <!-- this will be auto-populated -->
+		<tr><td><a href="http://img.ed4.net/citizensbank/2008/121207_rewards_january/build/images/coupon_aap_hr.gif">Advance Auto Parts</a></td><td>2017-06-30</td><td>10 dollars off a purchase of 50 or more</td><td></td><td>
+						<form method="POST" action="#">
+							<input type="submit" value="Delete">
+							<input type="hidden" name="Id" value="">
+						</form>
+					</td></tr><tr><td><a href="https://s-media-cache-ak0.pinimg.com/originals/29/6b/39/296b391dc7b7fa485c05a66f550f985d.png">Bestbuy</a></td><td>2017-08-15</td><td>Save an extra 10 percent</td><td></td><td>
+						<form method="POST" action="#">
+							<input type="submit" value="Delete">
+							<input type="hidden" name="Id" value="">
+						</form>
+					</td></tr>    </tbody>
+</table>
+<br><br>
+<a href="UploadCoupon.html">Upload Coupon</a><br>
+
+<hr>
+I'm the footer text, replace me!
+<script>
+function sortTable(n) {
+    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+    table = document.getElementById("myTable2");
+    switching = true;
+    //Set the sorting direction to ascending:
+    dir = "asc";
+    /*Make a loop that will continue until
+    no switching has been done:*/
+    while (switching) {
+        //start by saying: no switching is done:
+        switching = false;
+        rows = table.getElementsByTagName("TR");
+        /*Loop through all table rows (except the
+        first, which contains table headers):*/
+        for (i = 1; i < (rows.length - 1) ; i++) {
+            //start by saying there should be no switching:
+            shouldSwitch = false;
+            /*Get the two elements you want to compare,
+            one from current row and one from the next:*/
+            x = rows[i].getElementsByTagName("TD")[n];
+            y = rows[i + 1].getElementsByTagName("TD")[n];
+            /*check if the two rows should switch place,
+            based on the direction, asc or desc:*/
+            if (dir == "asc") {
+                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                    //if so, mark as a switch and break the loop:
+                    shouldSwitch = true;
+                    break;
+                }
+            } else if (dir == "desc") {
+                if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                    //if so, mark as a switch and break the loop:
+                    shouldSwitch = true;
+                    break;
+                }
+            }
+        }
+        if (shouldSwitch) {
+            /*If a switch has been marked, make the switch
+            and mark that a switch has been done:*/
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+            //Each time a switch is done, increase this count by 1:
+            switchcount++;
+        } else {
+            /*If no switching has been done AND the direction is "asc",
+            set the direction to "desc" and run the while loop again.*/
+            if (switchcount == 0 && dir == "asc") {
+                dir = "desc";
+                switching = true;
+            }
+        }
+    }
+}
+
+function clickExpirationDate(){
+	document.getElementById("expirationDate").click();
+}
+
+</script>
+
+
+</body></html>
