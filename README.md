@@ -8,6 +8,7 @@ This system is unique because it does not use any database systems to keep track
 - Extremely lightweight, unless the website is being accessed there is nothing running on the server
   - Entire codebase is less than 20 KB
   - Expired coupons are only erased when the coupon listing page is loaded, there is no background service that runs constantly on the server
+  - No external JavaScript is loaded (no JQuery)
   
 ## Disadvantages
 - Currently, the percent symbol (%) is not preserved in the filenames and thus a coupon that offers `5% off` will be displayed as `5 off`.
