@@ -51,7 +51,7 @@
 				for($i = 2; $i < count($files); $i++){
 					echo "<tr>";
 					$str = explode("_", $files[$i]);
-					for($j = 0; $j < 4; $j++){
+					for($j = 0; $j < count($str)-1; $j++){
 						if($j == 0){
 							$unencodedUrl = "uploads/" . $str[0] . "_" . $str[1] . "_" . $str[2] . "_" . $str[3] . "_" . $str[4];
 							$encodedUrl = htmlentities($unencodedUrl);
