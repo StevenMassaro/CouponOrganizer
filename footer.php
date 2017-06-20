@@ -1,4 +1,3 @@
 <?php
-echo "<hr>
-<a href=\"http://www.stevenmassaro.com\">Home</a>";
+echo "<hr>Replace me, I'm the footer text!";
 ?>
