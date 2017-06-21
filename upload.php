@@ -1,4 +1,8 @@
 <?php
+// ini_set('display_errors', 'On');
+// error_reporting(E_ALL);
+// error_reporting(E_ALL | E_STRICT);
+
 $target_dir = "uploads/";
 $uploadOk = 1;
 
@@ -12,7 +16,6 @@ $fileExtension = pathinfo(basename($_FILES["fileToUpload"]["name"]),PATHINFO_EXT
 $destinationFilename = $merchant . "_" . $expirationDate . "_" . $deal . "_" . $notes . "_." . $fileExtension;
 $destinationFilename = validateFileName($destinationFilename);
 $destinationFilePath = $target_dir . $destinationFilename;
-
 
 // Check if file already exists
 if (file_exists($destinationFilePath)) {
