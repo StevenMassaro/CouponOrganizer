@@ -14,11 +14,19 @@
 		padding: 5px;
 		border: 1px solid black;
 	}
+	
+	html, body, iframe {
+		height: 100%;
+	}
+	iframe {
+		height: 98%;
+	}
 	</style>
 	
   </head>
 <body>
 <!--onload="clickExpirationDate()"-->
+<iframe style="position: relative; width: 50%; border: none; float: right;" name="side_coupon" src="" frameBorder="0"></iframe>
 
 <?php 
 // ini_set('display_errors', 'On');
@@ -54,7 +62,7 @@
 							$unencodedUrl = "uploads/" . $str[0] . "_" . $str[1] . "_" . $str[2] . "_" . $str[3] . "_" . $str[4];
 							$encodedUrl = htmlentities($unencodedUrl);
 							echo "<td>";
-							echo "<a href=\"" . $encodedUrl . "\">" . $str[0];
+							echo "<a href=\"" . $encodedUrl . "\" target=\"side_coupon\">" . $str[0];
 							echo "</td>";
 						}
 						else{
@@ -76,6 +84,8 @@
 			?>
     </tbody>
 </table>
+
+
 <br><br>
 <a href="UploadCoupon.php">Upload Coupon</a><br>
 
