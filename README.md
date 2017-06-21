@@ -31,4 +31,4 @@ I've successfully used this program on the following webservers:
 - ~~Change the listing page so that links are displayed rather than static text (this will allow coupons to be downloaded from the interface)~~
 - Allow percent symbol (%) to be displayed and stored in file name
 - ~~Create sample site and load to Github~~
-- Open Coupons in iframe on coupon listing page
+- ~~Open Coupons in iframe on coupon listing page~~
