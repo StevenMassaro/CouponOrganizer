@@ -32,3 +32,4 @@ I've successfully used this program on the following webservers:
 - Allow percent symbol (%) to be displayed and stored in file name
 - ~~Create sample site and load to Github~~
 - ~~Open Coupons in iframe on coupon listing page~~
+- Implement Google Calendar API so events are automatically created in calendar to correspond with expiration dates
