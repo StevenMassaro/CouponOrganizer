@@ -8,6 +8,7 @@ View a simple, non interactive version of the <a target="_blank" href="https://s
 
 ## Advantages
 - No SQL or any type of database needed
+- Connects to Cronofy, which allows events to be automatically created in your calendar (Outlook, Google, etc) that correspond to the expiration dates of the coupons (basic functionality working now, still a work in progress)
 - Extremely lightweight, unless the website is being accessed there is nothing running on the server
   - Entire codebase is less than 20 KB
   - Expired coupons are only erased when the coupon listing page is loaded, there is no background service that runs constantly on the server
@@ -32,4 +33,6 @@ I've successfully used this program on the following webservers:
 - Allow percent symbol (%) to be displayed and stored in file name
 - ~~Create sample site and load to Github~~
 - ~~Open Coupons in iframe on coupon listing page~~
-- Implement Google Calendar API so events are automatically created in calendar to correspond with expiration dates
+- ~~Implement Google Calendar API so events are automatically created in calendar to correspond with expiration dates~~
+- Deleted coupons delete corresponding google calendar event
+- Update calendar description to correspond to the description of the coupon
