@@ -1,7 +1,9 @@
 <?php
-// ini_set('display_errors', 'On');
-// error_reporting(E_ALL);
-// error_reporting(E_ALL | E_STRICT);
+ini_set('display_errors', 'On');
+error_reporting(E_ALL);
+error_reporting(E_ALL | E_STRICT);
+
+include('_creds.php');
 
 $target_dir = "uploads/";
 $uploadOk = 1;
@@ -37,16 +39,50 @@ if($fileExtension != "jpg" && $fileExtension != "png" && $fileExtension != "jpeg
 }
 
 // Check if $uploadOk is set to 0 by an error
-if ($uploadOk == 0) {
+if ($uploadOk == 0)
+{
     echo "Sorry, your file was not uploaded.";
 // if everything is ok, try to upload file
-} else {
-    if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $destinationFilePath)) {
-        echo "The file ". $destinationFilename . " has been uploaded.";
-    } else {
-        echo "Sorry, there was an error uploading your file.";
-    }
 }
+else
+{
+    if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $destinationFilePath))
+	{
+        echo "The file ". $destinationFilename . " has been uploaded.";
+		$curl = curl_init();
+		$_date = date('Y-m-d', strtotime($expirationDate . " +1 day"));
+
+		curl_setopt_array($curl, array(
+			CURLOPT_URL => "***REMOVED***",
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_ENCODING => "",
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 30,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST => "POST",
+			CURLOPT_POSTFIELDS => "{\n    \"event_id\":\"" . $destinationFilename . "\",\n    \"summary\":\"" . $merchant . " coupon expires\",\n    \"description\":\"\",\n    \"start\":\"" . $expirationDate . "\",\n    \"end\":\"" . $_date . "\",\n    \"tzid\":\"America/New_York\",\n    \"location\":{\n        \"description\":\"\"\n    }\n}",
+			CURLOPT_HTTPHEADER => array(
+			"authorization: Bearer " . $bearerToken . "",
+			"cache-control: no-cache",
+			"content-type: application/json",
+			"postman-token: e8378bf1-a74e-71b7-efa4-b951674df3a5"
+			),
+		));
+
+		$response = curl_exec($curl);
+		$err = curl_error($curl);
+
+		curl_close($curl);
+
+		if ($err) {
+			echo "cURL Error #:" . $err;
+		}
+		else {
+			echo $response;
+		}
+	}
+}
+
 
 echo "<br><br><a href=\"UploadCoupon.php\">Upload Coupon</a><br>";
 echo "<a href=\"CouponListing.php\">Coupon Listing</a><br>";
