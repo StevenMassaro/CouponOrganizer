@@ -3,3 +3,5 @@ uploads/*
 uploads/*
 *.config
 footer.forStevenSite
+_creds.php
+cacert.pem
