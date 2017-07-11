@@ -17,11 +17,12 @@ View a simple, non interactive version of the <a target="_blank" href="https://s
 ## Installation process
 Download the repo. Move the contents to your webserver's wwwroot location. Create a folder called "uploads" in the root directory (the same directory as all of the PHP files). Navigate to the index.php file through your favorite web browser. Enjoy!
 
-Cronofy setup:
-Create Cronofy account and generate a bearerToken (API key). Create a file in the root directory called "\_creds.php". Store your bearerToken in that file as shown below:
+*Cronofy setup:*
+Create Cronofy account and generate a bearerToken (API key). Create a file in the root directory called "\_creds.php". Store your bearerToken and the calendar ID of the calendar you wish events to be created in as shown in the sample "\_creds.php" file below:
 ```
 <?php
 $bearerToken = "paste token here";
+$calendarId = "paste calendar ID here";
 ?>
 ```
 
