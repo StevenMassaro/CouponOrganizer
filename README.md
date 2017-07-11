@@ -14,10 +14,6 @@ View a simple, non interactive version of the <a target="_blank" href="https://s
   - Expired coupons are only erased when the coupon listing page is loaded, there is no background service that runs constantly on the server
   - No external JavaScript is loaded (no JQuery)
   
-## Disadvantages
-- Currently, the percent symbol (%) is not preserved in the filenames and thus a coupon that offers `5% off` will be displayed as `5 off`.
-
-
 ## Installation process
 Download the repo. Move the contents to your webserver's wwwroot location. Create a folder called "uploads" in the root directory (the same directory as all of the PHP files). Navigate to the index.php file through your favorite web browser. Enjoy!
 
@@ -30,9 +26,10 @@ I've successfully used this program on the following webservers:
 - ~~Reenable the sorting functionality~~
 - ~~Create garbageCollection function that erases all coupons which have expired~~
 - ~~Change the listing page so that links are displayed rather than static text (this will allow coupons to be downloaded from the interface)~~
-- Allow percent symbol (%) to be displayed and stored in file name
+- ~~Allow percent symbol (%) to be displayed and stored in file name~~
 - ~~Create sample site and load to Github~~
 - ~~Open Coupons in iframe on coupon listing page~~
 - ~~Implement Google Calendar API so events are automatically created in calendar to correspond with expiration dates~~
 - ~~Deleted coupons delete corresponding google calendar event~~
 - ~~Update calendar description to correspond to the description of the coupon~~
+- When coupon is selected in file upload page, display coupon automatically to allow for easy entering of data into the text boxes
