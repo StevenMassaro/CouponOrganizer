@@ -3,6 +3,8 @@
 $id = $_POST["Id"];
 $dir = 'uploads/';
 
+include('_creds.php');
+
 //delete the file
 $result = unlink($dir . $id);
 // echo $result;
@@ -19,7 +21,7 @@ echo "<br><br>Deleting event in Google Calendar...";
 $curl = curl_init();
 
 curl_setopt_array($curl, array(
-	CURLOPT_URL => "***REMOVED***",
+	CURLOPT_URL => "https://api.cronofy.com/v1/calendars/" . $calendarId . "/events",
 	CURLOPT_RETURNTRANSFER => true,
 	CURLOPT_ENCODING => "",
 	CURLOPT_MAXREDIRS => 10,
