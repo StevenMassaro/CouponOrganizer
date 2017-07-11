@@ -49,6 +49,7 @@ else
     if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $destinationFilePath))
 	{
         echo "The file ". $destinationFilename . " has been uploaded.";
+		echo "<br><br>Creating event in Google Calendar...";
 		$curl = curl_init();
 		$_date = date('Y-m-d', strtotime($expirationDate . " +1 day"));
 
@@ -60,7 +61,7 @@ else
 			CURLOPT_TIMEOUT => 30,
 			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
 			CURLOPT_CUSTOMREQUEST => "POST",
-			CURLOPT_POSTFIELDS => "{\n    \"event_id\":\"" . $destinationFilename . "\",\n    \"summary\":\"" . $merchant . " coupon expires\",\n    \"description\":\"\",\n    \"start\":\"" . $expirationDate . "\",\n    \"end\":\"" . $_date . "\",\n    \"tzid\":\"America/New_York\",\n    \"location\":{\n        \"description\":\"\"\n    }\n}",
+			CURLOPT_POSTFIELDS => "{\n    \"event_id\":\"" . $destinationFilename . "\",\n    \"summary\":\"" . $merchant . " coupon expires\",\n    \"description\":\"Deal: " . $deal . "\\nNotes: " . $notes . "\",\n    \"start\":\"" . $expirationDate . "\",\n    \"end\":\"" . $_date . "\",\n    \"tzid\":\"America/New_York\",\n    \"location\":{\n        \"description\":\"\"\n    }\n}",
 			CURLOPT_HTTPHEADER => array(
 			"authorization: Bearer " . $bearerToken . "",
 			"cache-control: no-cache",
@@ -75,9 +76,11 @@ else
 		curl_close($curl);
 
 		if ($err) {
-			echo "cURL Error #:" . $err;
+			echo "<br><br>Possible event creation error!";
+			echo "<br><br>cURL Error #:" . $err;
 		}
 		else {
+			echo "<br><br>Event created.";
 			echo $response;
 		}
 	}
