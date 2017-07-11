@@ -59,23 +59,26 @@
 					$str = explode("_", $files[$i]);
 					for($j = 0; $j < count($str)-1; $j++){
 						if($j == 0){
-							$unencodedUrl = "uploads/" . $str[0] . "_" . $str[1] . "_" . $str[2] . "_" . $str[3] . "_" . $str[4];
-							$encodedUrl = htmlentities($unencodedUrl);
+							$unencodedUrl = $str[0] . "_" . $str[1] . "_" . $str[2] . "_" . $str[3] . "_" . $str[4];
+							$encodedUrl = rawurlencode($unencodedUrl);
+							$encodedUrl = "uploads/" . $encodedUrl;
 							echo "<td>";
-							echo "<a href=\"" . $encodedUrl . "\" target=\"side_coupon\">" . $str[0];
+							echo "<a href=\"" . $encodedUrl . "\" target=\"side_coupon\">" . rawurldecode($str[0]);
 							echo "</td>";
 						}
 						else{
 							echo "<td>";
-							echo "$str[$j]";
+							echo rawurldecode($str[$j]);
 							echo "</td>";
 						}
 						
 					}
+					$fileName = $str[0] . "_" . $str[1] . "_" . $str[2] . "_" . $str[3] . "_" . $str[4];
+					$fileName = rawurlencode($fileName);
 					echo "<td>
 						<form method =\"POST\" action=\"deleteFile.php\">
 							<input type=\"submit\" value=\"Delete\" />
-							<input type=\"hidden\" name=\"Id\" value=\"$str[0]_$str[1]_$str[2]_$str[3]_$str[4]\">
+							<input type=\"hidden\" name=\"Id\" value=\"" . $fileName . "\">
 						</form>
 					</td>";
 					echo "</tr>";

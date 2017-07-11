@@ -11,7 +11,7 @@
 
 <form action="upload.php" method="post" enctype="multipart/form-data">
     Select coupon to upload:
-    <input type="file" name="fileToUpload" id="fileToUpload"><br>
+    <input type="file" name="fileToUpload" id="fileToUpload" accept=".jpg, .jpeg, .png, .gif, .pdf"><br>
 	Merchant: <input type="text" name="merchant" id="merchant" required><br>
 	Expiration Date: <input type="date" name="expirationDate" id="expirationDate"><br>
 	Deal: <input type="text" name="deal" id="deal" required><br>

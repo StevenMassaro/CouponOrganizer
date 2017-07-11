@@ -45,7 +45,7 @@ if ($err){
 	echo "cURL Error #:" . $err;
 }
 else{
-	echo "<br><br>Event deleted: ";
+	echo "<br><br>Event deleted.";
 	echo $response;
 }
 

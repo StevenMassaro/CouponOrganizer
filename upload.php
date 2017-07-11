@@ -16,7 +16,7 @@ $notes = $_POST["notes"];
 //$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
 $fileExtension = pathinfo(basename($_FILES["fileToUpload"]["name"]),PATHINFO_EXTENSION);
 $destinationFilename = $merchant . "_" . $expirationDate . "_" . $deal . "_" . $notes . "_." . $fileExtension;
-$destinationFilename = validateFileName($destinationFilename);
+$destinationFilename = rawurlencode($destinationFilename);
 $destinationFilePath = $target_dir . $destinationFilename;
 
 // Check if file already exists
@@ -94,9 +94,9 @@ echo "<a href=\"CouponListing.php\">Coupon Listing</a><br>";
 
 include 'footer.php';
 
-function validateFileName($file){
-	$file = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '', $file);
-	$file = mb_ereg_replace("([\.]{2,})", '', $file);
-	return $file;
-}
+// function validateFileName($file){
+	// $file = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '', $file);
+	// $file = mb_ereg_replace("([\.]{2,})", '', $file);
+	// return $file;
+// }
 ?>
