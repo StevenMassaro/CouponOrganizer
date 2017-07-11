@@ -21,9 +21,7 @@ View a simple, non interactive version of the <a target="_blank" href="https://s
 ## Installation process
 Download the repo. Move the contents to your webserver's wwwroot location. Create a folder called "uploads" in the root directory (the same directory as all of the PHP files). Navigate to the index.php file through your favorite web browser. Enjoy!
 
-<<<<<<< HEAD
-=======
-Cronofy setup:
+*Cronofy setup:*
 Create Cronofy account and generate a bearerToken (API key). Create a file in the root directory called "\_creds.php". Store your bearerToken in that file as shown below:
 ```
 <?php
@@ -31,7 +29,6 @@ $bearerToken = "paste token here";
 ?>
 ```
 
->>>>>>> parent of 1e59de5... Update README.md
 ## Compatibility
 I've successfully used this program on the following webservers:
 - Microsoft IIS 7.5
