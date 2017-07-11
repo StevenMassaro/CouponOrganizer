@@ -54,7 +54,7 @@ else
 		$_date = date('Y-m-d', strtotime($expirationDate . " +1 day"));
 
 		curl_setopt_array($curl, array(
-			CURLOPT_URL => "https://api.cronofy.com/v1/calendars/" . $calendarId . "/events",
+			CURLOPT_URL => "***REMOVED***",
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_ENCODING => "",
 			CURLOPT_MAXREDIRS => 10,
