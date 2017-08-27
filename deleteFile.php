@@ -5,6 +5,9 @@ $dir = 'uploads/';
 
 include('_creds.php');
 
+//convert the url encoded id to what the actual filename is on the server
+$id = rawurldecode($id);
+
 //delete the file
 $result = unlink($dir . $id);
 // echo $result;
