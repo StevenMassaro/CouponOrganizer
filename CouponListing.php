@@ -25,8 +25,6 @@
 	
   </head>
 <body>
-<!--onload="clickExpirationDate()"-->
-<iframe style="position: relative; width: 50%; border: none; float: right;" name="side_coupon" src="" frameBorder="0"></iframe>
 
 <?php 
 // ini_set('display_errors', 'On');
@@ -36,17 +34,7 @@
 
 <h1>Coupons</h1>
 <?php include 'garbageCollector.php'; ?> expired coupons have been deleted.<br><br>
-<table id="myTable2">
-    <thead id="headings">
-        <tr>
-            <th onclick="sortTable(0)" id="merchant">Merchant</th>
-            <th onclick="sortTable(1)" id="expirationDate">Expiration Date</th>
-            <th onclick="sortTable(2)" id="deal">Deal</th>
-			<th onclick="sortTable(3)" id="notes">Notes</th>
-        </tr>
-    </thead>
-    <tbody id="results">
-        <!-- this will be auto-populated -->
+
 		<?php
 			$dir = 'uploads/';
 			$files = scandir($dir);
@@ -54,40 +42,57 @@
 			showResults($files);
 
 			function showResults($files){
-				for($i = 2; $i < count($files); $i++){
-					echo "<tr>";
-					$str = explode("_", $files[$i]);
-					for($j = 0; $j < count($str)-1; $j++){
-						if($j == 0){
-							$unencodedUrl = $str[0] . "_" . $str[1] . "_" . $str[2] . "_" . $str[3] . "_" . $str[4];
-							$encodedUrl = rawurlencode($unencodedUrl);
-							$encodedUrl = "uploads/" . $encodedUrl;
-							echo "<td>";
-							echo "<a href=\"" . $encodedUrl . "\" target=\"side_coupon\">" . rawurldecode($str[0]);
-							echo "</td>";
+				if(count($files) > 2){
+					echo "
+					<iframe style=\"position: relative; width: 50%; border: none; float: right;\" name=\"side_coupon\" src=\"\" frameBorder=\"0\"></iframe>
+					<table id=\"myTable2\">
+							<thead id=\"headings\">
+								<tr>
+									<th onclick=\"sortTable(0)\" id=\"merchant\">Merchant</th>
+									<th onclick=\"sortTable(1)\" id=\"expirationDate\">Expiration Date</th>
+									<th onclick=\"sortTable(2)\" id=\"deal\">Deal</th>
+									<th onclick=\"sortTable(3)\" id=\"notes\">Notes</th>
+								</tr>
+							</thead>
+							<tbody id=\"results\">";
+							
+					for($i = 2; $i < count($files); $i++){
+						echo "<tr>";
+						$str = explode("_", $files[$i]);
+						for($j = 0; $j < count($str)-1; $j++){
+							if($j == 0){
+								$unencodedUrl = $str[0] . "_" . $str[1] . "_" . $str[2] . "_" . $str[3] . "_" . $str[4];
+								$encodedUrl = rawurlencode($unencodedUrl);
+								$encodedUrl = "uploads/" . $encodedUrl;
+								echo "<td>";
+								echo "<a href=\"" . $encodedUrl . "\" target=\"side_coupon\">" . rawurldecode($str[0]);
+								echo "</td>";
+							}
+							else{
+								echo "<td>";
+								echo rawurldecode($str[$j]);
+								echo "</td>";
+							}
+							
 						}
-						else{
-							echo "<td>";
-							echo rawurldecode($str[$j]);
-							echo "</td>";
-						}
-						
+						$fileName = $str[0] . "_" . $str[1] . "_" . $str[2] . "_" . $str[3] . "_" . $str[4];
+						$fileName = rawurlencode($fileName);
+						echo "<td>
+							<form method =\"POST\" action=\"deleteFile.php\">
+								<input type=\"submit\" value=\"Delete\" />
+								<input type=\"hidden\" name=\"Id\" value=\"" . $fileName . "\">
+							</form>
+						</td>";
+						echo "</tr>";
 					}
-					$fileName = $str[0] . "_" . $str[1] . "_" . $str[2] . "_" . $str[3] . "_" . $str[4];
-					$fileName = rawurlencode($fileName);
-					echo "<td>
-						<form method =\"POST\" action=\"deleteFile.php\">
-							<input type=\"submit\" value=\"Delete\" />
-							<input type=\"hidden\" name=\"Id\" value=\"" . $fileName . "\">
-						</form>
-					</td>";
-					echo "</tr>";
+					
+					echo "</tbody></table>";
+				}
+				else{
+					echo "No coupons to display.";
 				}
 			}
 			?>
-    </tbody>
-</table>
-
 
 <br><br>
 <a href="UploadCoupon.php">Upload Coupon</a><br>
