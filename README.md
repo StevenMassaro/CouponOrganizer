@@ -28,8 +28,8 @@ $calendarId = "paste calendar ID here";
 
 ## Compatibility
 I've successfully used this program on the following webservers:
-- Microsoft IIS 7.5
-- Apache (unsure of version, will update later)
+- Microsoft IIS
+- Apache
 ---
 #### To do
 - ~~Reenable the sorting functionality~~
