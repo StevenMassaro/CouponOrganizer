@@ -43,3 +43,4 @@ I've successfully used this program on the following webservers:
 - ~~Update calendar description to correspond to the description of the coupon~~
 - Update sample site
 - Display coupon immediately after selecting coupon file so that it is easier to enter information in the upload coupon window
+- Don't submit notes to calendar if notes don't exist
