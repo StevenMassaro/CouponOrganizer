@@ -1,11 +1,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 	<div>
-		<form method="POST" enctype="multipart/form-data" action="http://localhost:8080/">
+		<form method="POST" enctype="multipart/form-data" action="http://localhost:8080/CouponOrganizer/insert">
 			<table>
-			<input type="text" name="store"/>
-			<input type="text" name="deal"/>
-			<input type="text" name="comment"/>
+				Store: <input type="text" name="store"/><br>
+				Deal: <input type="text" name="deal"/><br>
+				Comment: <input type="text" name="comment"/><br>
+				Date: <input type="date" name="expirationDate"/><br>
 				<tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr>
 				<tr><td></td><td><input type="submit" value="Upload" /></td></tr>
 			</table>

@@ -4,21 +4,27 @@ import CouponOrganizer.model.Coupon;
 import org.apache.ibatis.annotations.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Date;
 import java.util.List;
 
 @Mapper
 public interface CouponMapper {
-	@Select("SELECT * FROM coupons.newtable")
-	List<Coupon> list2();
+	String DATABASE = "coupons";
+	String TABLE = "coupons";
+	String SCHEMA = DATABASE + "." + TABLE;
 
-	@Insert("INSERT INTO coupons.newtable" +
-			"(\"store\", deal, \"comment\", \"file\")" +
-			"VALUES(#{store}, #{deal}, #{comment}, #{file})")
+	@Select("SELECT \"store\", deal, \"comment\", expirationDate FROM " + SCHEMA)
+	List<Coupon> list();
+
+	@Insert("INSERT INTO " + SCHEMA +
+			"(\"store\", deal, \"comment\", expirationDate, \"file\")" +
+			"VALUES(#{store}, #{deal}, #{comment}, #{expirationDate}, #{file})")
 	void insert(@Param("store") String store,
 				@Param("deal") String deal,
 				@Param("comment") String comment,
+				@Param("expirationDate") Date expirationDate,
 				@Param("file") byte[] file);
 
-	@Select("SELECT file FROM coupons.newtable WHERE id=3")
-	Coupon file();
+	@Select("SELECT * FROM " + SCHEMA + " WHERE id= #{id}")
+	Coupon get(@Param("id") long id);
 }

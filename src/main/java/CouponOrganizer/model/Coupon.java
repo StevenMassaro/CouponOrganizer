@@ -1,10 +1,13 @@
 package CouponOrganizer.model;
 
+import java.util.Date;
+
 public class Coupon {
 	private int id;
 	private String store;
 	private String deal;
 	private String comment;
+	private Date expirationDate;
 	private byte[] file;
 
 	public int getId() {
@@ -45,5 +48,13 @@ public class Coupon {
 
 	public void setFile(byte[] file) {
 		this.file = file;
+	}
+
+	public Date getExpirationDate() {
+		return expirationDate;
+	}
+
+	public void setExpirationDate(Date expirationDate) {
+		this.expirationDate = expirationDate;
 	}
 }

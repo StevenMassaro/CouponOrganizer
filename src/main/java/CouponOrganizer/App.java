@@ -21,6 +21,6 @@ public class App extends SpringBootServletInitializer {
 //
 //	@Override
 //	public void run(String... args) throws Exception {
-//		System.out.println(this.cityMapper.list2());
+//		System.out.println(this.cityMapper.list());
 //	}
 }
