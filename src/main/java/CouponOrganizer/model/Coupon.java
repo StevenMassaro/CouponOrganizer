@@ -8,7 +8,6 @@ public class Coupon {
 	private String deal;
 	private String comment;
 	private Date expirationDate;
-	private byte[] file;
 
 	public int getId() {
 		return id;
@@ -40,14 +39,6 @@ public class Coupon {
 
 	public void setComment(String comment) {
 		this.comment = comment;
-	}
-
-	public byte[] getFile() {
-		return file;
-	}
-
-	public void setFile(byte[] file) {
-		this.file = file;
 	}
 
 	public Date getExpirationDate() {

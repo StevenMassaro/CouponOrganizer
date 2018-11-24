@@ -27,25 +27,22 @@ public class CouponServiceImpl {
         return couponMapper.list();
     }
 
-    public void insert(String store,
+    /**
+     *
+     * @param store
+     * @param deal
+     * @param comment
+     * @param expirationDate
+     * @return id of the coupon that was inserted/created
+     */
+    public long insert(String store,
                        String deal,
                        String comment,
-                       Date expirationDate,
-                       MultipartFile file) throws IOException {
-        couponMapper.insert(store, deal, comment, expirationDate, Base64.getEncoder().encode(file.getBytes()));
+                       Date expirationDate) {
+        return couponMapper.insert(store, deal, comment, expirationDate);
     }
 
-    public Coupon get(long id) throws IOException {
+    public Coupon get(long id) {
         return couponMapper.get(id);
-    }
-
-    public Resource getFile(long id) throws IOException {
-        Coupon coupon = couponMapper.get(id);
-
-        byte[] databaseFile = coupon.getFile();
-        File file = File.createTempFile(coupon.getStore(), ".pdf");
-        FileUtils.writeByteArrayToFile(file, Base64.getDecoder().decode(databaseFile));
-        Resource response = new FileSystemResource(file);
-        return response;
     }
 }

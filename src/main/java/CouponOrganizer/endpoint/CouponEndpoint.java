@@ -2,6 +2,8 @@ package CouponOrganizer.endpoint;
 
 import CouponOrganizer.model.Coupon;
 import CouponOrganizer.service.CouponServiceImpl;
+import CouponOrganizer.service.FileServiceImpl;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -21,6 +23,9 @@ public class CouponEndpoint {
 	@Autowired
 	private CouponServiceImpl couponService;
 
+	@Autowired
+    private FileServiceImpl fileService;
+
 	@GetMapping("/list")
 	public List<Coupon> list(){
 		return couponService.list();
@@ -28,7 +33,7 @@ public class CouponEndpoint {
 
 	@GetMapping("/get")
 	public ResponseEntity<Resource> getFile(@RequestParam("id") long id) throws IOException {
-		Resource file = couponService.getFile(id);
+		Resource file = fileService.getFile(id);
 		return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
 				"attachment; filename=\"" + file.getFilename() + "\"").body(file);
 	}
@@ -40,7 +45,8 @@ public class CouponEndpoint {
 					  @RequestParam("expirationDate") @DateTimeFormat(pattern="yyyy-MM-dd") Date expirationDate,
 					  @RequestParam("file") MultipartFile file,
 					  RedirectAttributes redirectAttributes) throws IOException {
-		couponService.insert(store, deal, comment, expirationDate, file);
+		long id = couponService.insert(store, deal, comment, expirationDate);
+		fileService.insert(id, file, FilenameUtils.getExtension(file.getOriginalFilename()));
 
 		redirectAttributes.addFlashAttribute("message",
 				"You successfully uploaded " + file.getOriginalFilename() + "!");
