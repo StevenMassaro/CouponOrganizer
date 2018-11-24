@@ -1,7 +1,10 @@
 package CouponOrganizer.mapper;
 
 import CouponOrganizer.model.Coupon;
-import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.Date;
 import java.util.List;
@@ -10,12 +13,12 @@ import java.util.List;
 public interface CouponMapper extends BaseMapper {
     String COUPON_TABLE = "coupons";
     String COUPON_SCHEMA = DATABASE + "." + COUPON_TABLE;
-    String FILE_TABLE = "file";
-    String FILE_SCHEMA = DATABASE + "." + FILE_TABLE;
 
-    //    @Select("SELECT \"store\", deal, \"comment\", expirationDate FROM " + COUPON_SCHEMA)
-    @Select("SELECT * FROM " + COUPON_SCHEMA)
+    @Select("SELECT * FROM " + COUPON_SCHEMA + " WHERE dateDeleted is NULL")
     List<Coupon> list();
+
+    @Select("SELECT * FROM " + COUPON_SCHEMA + " WHERE dateDeleted is not NULL")
+    List<Coupon> listDeleted();
 
     @Select("INSERT INTO " + COUPON_SCHEMA +
             "(\"store\", deal, \"comment\", expirationDate) " +
@@ -26,11 +29,10 @@ public interface CouponMapper extends BaseMapper {
                 @Param("comment") String comment,
                 @Param("expirationDate") Date expirationDate);
 
-    //    @Select("select c.id, c.store, c.deal, c.comment, c.expirationdate, f.file, f.extension " +
-//            "from " + COUPON_SCHEMA + " c " +
-//            "join " + FILE_SCHEMA + " f " +
-//            "on c.id = f.id " +
-//            "where c.id = #{id}")
     @Select("SELECT * FROM " + COUPON_SCHEMA + " WHERE id= #{id}")
     Coupon get(@Param("id") long id);
+
+    @Delete("UPDATE " + COUPON_SCHEMA + " SET dateDeleted = #{dateDeleted} WHERE id = #{id}")
+    void setDateDeleted(@Param("dateDeleted") Date dateDeleted,
+                        @Param("id") long id);
 }

@@ -2,18 +2,10 @@ package CouponOrganizer.service;
 
 import CouponOrganizer.mapper.CouponMapper;
 import CouponOrganizer.model.Coupon;
-import org.apache.commons.io.FileUtils;
-
-import java.util.Base64;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +17,10 @@ public class CouponServiceImpl {
 
     public List<Coupon> list() {
         return couponMapper.list();
+    }
+
+    public List<Coupon> listDeleted() {
+        return couponMapper.listDeleted();
     }
 
     /**
@@ -44,5 +40,9 @@ public class CouponServiceImpl {
 
     public Coupon get(long id) {
         return couponMapper.get(id);
+    }
+
+    public void setDateDeleted(long id) {
+        couponMapper.setDateDeleted(new Date(), id);
     }
 }

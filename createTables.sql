@@ -7,5 +7,12 @@ CREATE TABLE coupons.coupons (
 	deal varchar(400) NOT NULL,
 	"comment" varchar(1000) NULL,
 	expirationDate date NULL,
-	file bytea NULL
+	dateDeleted date NULL
 );
+
+drop table if exists coupons.file;
+create table coupons.file (
+	id int not null,
+	file bytea not null,
+	extension varchar(50) not null
+)

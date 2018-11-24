@@ -1,5 +1,7 @@
 package CouponOrganizer.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class Coupon {
@@ -7,7 +9,10 @@ public class Coupon {
 	private String store;
 	private String deal;
 	private String comment;
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date expirationDate;
+	@JsonFormat(pattern="yyyy-MM-dd")
+	private Date dateDeleted;
 
 	public int getId() {
 		return id;
@@ -47,5 +52,13 @@ public class Coupon {
 
 	public void setExpirationDate(Date expirationDate) {
 		this.expirationDate = expirationDate;
+	}
+
+	public Date getDateDeleted() {
+		return dateDeleted;
+	}
+
+	public void setDateDeleted(Date dateDeleted) {
+		this.dateDeleted = dateDeleted;
 	}
 }

@@ -31,6 +31,11 @@ public class CouponEndpoint {
 		return couponService.list();
 	}
 
+	@GetMapping("/listDeleted")
+	public List<Coupon> listDeleted(){
+		return couponService.listDeleted();
+	}
+
 	@GetMapping("/get")
 	public ResponseEntity<Resource> getFile(@RequestParam("id") long id) throws IOException {
 		Resource file = fileService.getFile(id);
@@ -52,5 +57,10 @@ public class CouponEndpoint {
 				"You successfully uploaded " + file.getOriginalFilename() + "!");
 
 		return "redirect:/";
+	}
+
+	@DeleteMapping("/setDateDeleted")
+	public void setDateDeleted(@RequestParam("id") long id){
+		couponService.setDateDeleted(id);
 	}
 }
