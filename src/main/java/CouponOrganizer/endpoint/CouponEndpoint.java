@@ -56,7 +56,8 @@ public class CouponEndpoint {
 		redirectAttributes.addFlashAttribute("message",
 				"You successfully uploaded " + file.getOriginalFilename() + "!");
 
-		return "redirect:/";
+
+		return "File " + file.getOriginalFilename() + " successfully uploaded. <p><a href=\"index.html\">Home</a></p>";
 	}
 
 	@DeleteMapping("/setDateDeleted")
