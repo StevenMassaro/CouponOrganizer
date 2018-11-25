@@ -4,12 +4,13 @@ import CouponOrganizer.mapper.CouponMapper;
 import CouponOrganizer.mapper.FileMapper;
 import CouponOrganizer.model.Coupon;
 import CouponOrganizer.model.Metafile;
+import CouponOrganizer.model.pond.PondFile;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,9 +26,8 @@ public class FileServiceImpl {
     private FileMapper fileMapper;
 
     public void insert(long id,
-                       MultipartFile file,
-                       String extension) throws IOException {
-        fileMapper.insert(id, Base64.getEncoder().encode(file.getBytes()), extension);
+                       PondFile pondFile) {
+        fileMapper.insert(id, pondFile.getData().getBytes(), FilenameUtils.getExtension(pondFile.getName()));
     }
 
     public Resource getFile(long id) throws IOException {
