@@ -1,18 +1,14 @@
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <body>
 	<div>
-		<form method="POST" enctype="multipart/form-data" action="http://localhost:8080/insert">
-			<table>
-				Store: <input type="text" name="store"/><br>
-				Deal: <input type="text" name="deal"/><br>
-				Comment: <input type="text" name="comment"/><br>
-				Date: <input type="date" name="expirationDate"/><br>
-				<tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr>
-				<tr><td></td><td><input type="submit" value="Upload" /></td></tr>
-			</table>
-		</form>
+		<p><a href="upload.html">Upload</a></p>
+		<p><a href="list.html">List</a></p>
+		<p><a href="listDeleted.html">List deleted</a></p>
 	</div>
 
+<script>
+	document.getElementById('insertForm').action = window.location.origin + "/insert";
+</script>
 
 </body>
 </html>
