@@ -10,6 +10,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -47,16 +48,18 @@ public class CouponEndpoint {
 
 	@PostMapping("/insert")
 	public String insert(@RequestParam("store") String store,
-					  @RequestParam("deal") String deal,
-					  @RequestParam("comment") String comment,
-					  @RequestParam("expirationDate") @DateTimeFormat(pattern="yyyy-MM-dd") Date expirationDate,
-					  @RequestParam("file") String file) {
-		Gson gson = new Gson();
-		PondFile pondFile = gson.fromJson(file, PondFile.class);
-		long id = couponService.insert(store, deal, comment, expirationDate);
-		fileService.insert(id, pondFile);
-
-		return "File " + pondFile.getName() + " successfully uploaded. <p><a href=\"index.html\">Home</a></p>";
+                         @RequestParam("deal") String deal,
+                         @RequestParam(value = "comment", required = false) String comment,
+                         @RequestParam(value = "expirationDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date expirationDate,
+                         @RequestParam(value = "file", required = false) String file) {
+        long id = couponService.insert(store, deal, comment, expirationDate);
+        if(!StringUtils.isEmpty(file)){
+            Gson gson = new Gson();
+            PondFile pondFile = gson.fromJson(file, PondFile.class);
+            fileService.insert(id, pondFile);
+            return "File " + pondFile.getName() + " successfully uploaded. <p><a href=\"index.html\">Home</a></p>";
+        }
+		return "Coupon for " + store + " successfully created. <p><a href=\"index.html\">Home</a></p>";
 	}
 
 	@GetMapping("/setDateDeleted")
