@@ -3,6 +3,7 @@ package CouponOrganizer.endpoint;
 import CouponOrganizer.model.Coupon;
 import CouponOrganizer.model.pond.PondFile;
 import CouponOrganizer.service.CouponServiceImpl;
+import CouponOrganizer.service.CronofyServiceImpl;
 import CouponOrganizer.service.FileServiceImpl;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class CouponEndpoint {
 
 	@Autowired
     private FileServiceImpl fileService;
+
+	@Autowired
+	private CronofyServiceImpl cronofyService;
 
 	@GetMapping("/list")
 	public List<Coupon> list(){
@@ -59,6 +63,7 @@ public class CouponEndpoint {
             fileService.insert(id, pondFile);
             return "File " + pondFile.getName() + " successfully uploaded. <p><a href=\"index.html\">Home</a></p>";
         }
+		cronofyService.addEvent(store, deal, comment, expirationDate, id);
 		return "Coupon for " + store + " successfully created. <p><a href=\"index.html\">Home</a></p>";
 	}
 
