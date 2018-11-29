@@ -19,34 +19,65 @@
 
     <script src="https://unpkg.com/filepond-plugin-file-encode/dist/filepond-plugin-file-encode.js"></script>
 
+    <style>
+        input {
+            padding: 6px 10px;
+            margin: 4px;
+            box-sizing: border-box;
+        }
+
+        #submit {
+            clear: left;
+            float: left;
+            margin-top: 70px;
+        }
+
+        #fileWrapper, #submit, input {
+            max-width: 300px;
+            width: 300px;
+        }
+
+
+    </style>
 
 </head>
 <body>
 <div class="ui container">
     <p><h3 class="ui header">Upload</h3></p>
-    <form method="POST" id="insertForm" enctype="multipart/form-data" action="">
-        Store: <input type="text" name="store"/><br>
-        Deal: <input type="text" name="deal"/><br>
-        Comment: <input type="text" name="comment"/><br>
-        Date: <input type="date" name="expirationDate"/><br>
-        <tr>
-            <td>File to upload:</td>
-            <td><input type="file" name="file" id="file" class="filepond" data-max-file-size="20MB"
-                       data-max-files="1"/></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td><input type="submit" value="Upload"/></td>
-        </tr>
-        <!--<img id="preview" src="#"/>-->
+    <p><a href="index.html">Home</a></p>
+    <br>
+    <form method="POST" id="insertForm" enctype="multipart/form-data" action="" class="ui form">
+        <div class="required field">
+            <label>Store</label>
+            <input type="text" id="store" name="store"/>
+        </div>
+
+        <div class="required field">
+            <label>Deal</label>
+            <input type="text" id="deal" name="deal"/>
+        </div>
+
+        <div class="field">
+            <label>Comment</label>
+            <input type="text" name="comment"/>
+        </div>
+
+        <div class="field">
+            <label>Expiration Date</label>
+            <input type="date" id="expirationDate" name="expirationDate"/>
+        </div>
+
+        <div id="fileWrapper">
+            <input type="file" name="file" id="file" class="filepond" data-max-file-size="20MB"
+                   data-max-files="1"/>
+        </div>
+
+        <button class="ui button" type="submit" id="submit">Upload or Create</button>
     </form>
-    <div>
-        <p><a href="index.html">Home</a></p>
-    </div>
 </div>
 
 <script>
-	document.getElementById('insertForm').action = window.location.origin + "/insert";
+	document.getElementById('insertForm').action = getApiBaseUrl("/insert");
 
     FilePond.registerPlugin(
       FilePondPluginImagePreview,
@@ -56,6 +87,5 @@
     );
     FilePond.parse(document.body);
 </script>
-
 </body>
 </html>
