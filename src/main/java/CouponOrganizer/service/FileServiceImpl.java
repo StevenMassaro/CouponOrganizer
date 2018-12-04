@@ -6,7 +6,6 @@ import CouponOrganizer.model.Coupon;
 import CouponOrganizer.model.Metafile;
 import CouponOrganizer.model.pond.PondFile;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -25,9 +24,11 @@ public class FileServiceImpl {
     @Autowired
     private FileMapper fileMapper;
 
+    private String temporaryDirectory = System.getProperty("java.io.tmpdir");
+
     public void insert(long id,
                        PondFile pondFile) {
-        fileMapper.insert(id, pondFile.getData().getBytes(), FilenameUtils.getExtension(pondFile.getName()));
+        fileMapper.insert(id, pondFile.getType(), pondFile.getSize(), pondFile.getName(), pondFile.getData().getBytes());
     }
 
     public Resource getFile(long id) throws IOException {
@@ -35,7 +36,7 @@ public class FileServiceImpl {
         Metafile metafile = fileMapper.get(id);
 
         byte[] databaseFile = metafile.getFile();
-        File file = File.createTempFile(coupon.getStore(), "." + metafile.getExtension());
+        File file = new File(temporaryDirectory + File.separator + metafile.getFilename());
         file.deleteOnExit();
         FileUtils.writeByteArrayToFile(file, Base64.getDecoder().decode(databaseFile));
         Resource response = new FileSystemResource(file);

@@ -11,6 +11,7 @@ public class Coupon {
 	private String comment;
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date expirationDate;
+    private Date dateCreated;
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date dateDeleted;
 
@@ -53,6 +54,14 @@ public class Coupon {
 	public void setExpirationDate(Date expirationDate) {
 		this.expirationDate = expirationDate;
 	}
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
 
 	public Date getDateDeleted() {
 		return dateDeleted;

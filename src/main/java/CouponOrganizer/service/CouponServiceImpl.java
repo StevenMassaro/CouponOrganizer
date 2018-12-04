@@ -2,7 +2,6 @@ package CouponOrganizer.service;
 
 import CouponOrganizer.mapper.CouponMapper;
 import CouponOrganizer.model.Coupon;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +34,7 @@ public class CouponServiceImpl {
                        String deal,
                        String comment,
                        Date expirationDate) {
-        return couponMapper.insert(store, deal, comment, expirationDate);
+        return couponMapper.insert(store, deal, comment, expirationDate, new Date());
     }
 
     public Coupon get(long id) {

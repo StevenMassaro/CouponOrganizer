@@ -13,11 +13,13 @@ public interface FileMapper extends BaseMapper {
     String SCHEMA = DATABASE + "." + TABLE;
 
     @Insert("INSERT INTO " + SCHEMA +
-            " (id, \"file\", extension)" +
-            "VALUES (#{id}, #{file}, #{extension})")
+            " (id, type, size, filename, \"file\")" +
+            "VALUES (#{id}, #{type}, #{size}, #{filename}, #{file})")
     void insert(@Param("id") long id,
-                @Param("file") byte[] file,
-                @Param("extension") String extension);
+                @Param("type") String type,
+                @Param("size") long size,
+                @Param("filename") String filename,
+                @Param("file") byte[] file);
 
     @Select("SELECT * FROM " + SCHEMA + " WHERE id = #{id}")
     Metafile get(@Param("id") long id);

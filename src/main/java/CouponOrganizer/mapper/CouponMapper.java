@@ -21,13 +21,14 @@ public interface CouponMapper extends BaseMapper {
     List<Coupon> listDeleted();
 
     @Select("INSERT INTO " + COUPON_SCHEMA +
-            "(\"store\", deal, \"comment\", expirationDate) " +
-            "VALUES(#{store}, #{deal}, #{comment}, #{expirationDate}) " +
+            "(\"store\", deal, \"comment\", expirationDate, dateCreated) " +
+            "VALUES(#{store}, #{deal}, #{comment}, #{expirationDate}, #{dateCreated}) " +
             "RETURNING id ")
     long insert(@Param("store") String store,
                 @Param("deal") String deal,
                 @Param("comment") String comment,
-                @Param("expirationDate") Date expirationDate);
+                @Param("expirationDate") Date expirationDate,
+                @Param("dateCreated") Date dateCreated);
 
     @Select("SELECT * FROM " + COUPON_SCHEMA + " WHERE id= #{id}")
     Coupon get(@Param("id") long id);
