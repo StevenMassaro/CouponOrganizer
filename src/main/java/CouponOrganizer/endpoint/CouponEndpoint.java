@@ -57,13 +57,13 @@ public class CouponEndpoint {
                          @RequestParam(value = "expirationDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date expirationDate,
                          @RequestParam(value = "file", required = false) String file) {
         long id = couponService.insert(store, deal, comment, expirationDate);
-        if(!StringUtils.isEmpty(file)){
+        cronofyService.addEvent(store, deal, comment, expirationDate, id);
+        if (!StringUtils.isEmpty(file)) {
             Gson gson = new Gson();
             PondFile pondFile = gson.fromJson(file, PondFile.class);
             fileService.insert(id, pondFile);
             return "File " + pondFile.getName() + " successfully uploaded. <p><a href=\"index.html\">Home</a></p>";
         }
-		cronofyService.addEvent(store, deal, comment, expirationDate, id);
 		return "Coupon for " + store + " successfully created. <p><a href=\"index.html\">Home</a></p>";
 	}
 
