@@ -1,6 +1,7 @@
 package CouponOrganizer.service;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.biacode.jcronofy.api.client.CronofyClient;
 import org.biacode.jcronofy.api.client.impl.CronofyClientImpl;
@@ -25,13 +26,16 @@ public class CronofyServiceImpl {
     @Value("${timeZone}")
     private String timeZone;
 
+    @Value("${productionBaseUrl}")
+    private String productionBaseUrl;
+
     public void addEvent(String store, String deal, String comment, Date expirationDate, long id) {
         if (expirationDate != null) {
             final CronofyClient cronofyClient = new CronofyClientImpl(ClientBuilder.newBuilder().register(JacksonJsonProvider.class).build());
             CreateOrUpdateEventRequest createOrUpdateEventRequest = new CreateOrUpdateEventRequest();
             createOrUpdateEventRequest.setCalendarId(calendarId);
             createOrUpdateEventRequest.setAccessToken(accessToken);
-            createOrUpdateEventRequest.setDescription(buildDescription(store, deal, comment));
+            createOrUpdateEventRequest.setDescription(buildDescription(store, deal, comment, id));
             createOrUpdateEventRequest.setEventId(buildEventId(store, id));
             createOrUpdateEventRequest.setStart(expirationDate);
             createOrUpdateEventRequest.setEnd(getEndDate(expirationDate));
@@ -41,8 +45,13 @@ public class CronofyServiceImpl {
         }
     }
 
-    private String buildDescription(String store, String deal, String comment) {
-        return "Store: " + store + System.lineSeparator() + "Deal: " + deal + System.lineSeparator() + "Comment: " + comment;
+    private String buildDescription(String store, String deal, String comment, long id) {
+        String description = "Store: " + store + System.lineSeparator() + "Deal: " + deal;
+        if (StringUtils.isNotEmpty(comment)) {
+            description += System.lineSeparator() + "Comment: " + comment;
+        }
+        description += System.lineSeparator() + productionBaseUrl + "/get?id=" + id;
+        return description;
     }
 
     private String buildEventId(String store, long id) {
