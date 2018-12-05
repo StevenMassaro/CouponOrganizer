@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.Date;
 
 public class Coupon {
-	private int id;
+	private long id;
 	private String store;
 	private String deal;
 	private String comment;
@@ -15,11 +15,11 @@ public class Coupon {
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date dateDeleted;
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
