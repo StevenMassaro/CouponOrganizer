@@ -1,15 +1,13 @@
 package CouponOrganizer.service;
 
-import CouponOrganizer.mapper.CouponMapper;
 import CouponOrganizer.mapper.FileMapper;
-import CouponOrganizer.model.Coupon;
 import CouponOrganizer.model.Metafile;
-import CouponOrganizer.model.pond.PondFile;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,20 +17,16 @@ import java.util.Base64;
 public class FileServiceImpl {
 
     @Autowired
-    private CouponMapper couponMapper;
-
-    @Autowired
     private FileMapper fileMapper;
 
     private String temporaryDirectory = System.getProperty("java.io.tmpdir");
 
-    public void insert(long id,
-                       PondFile pondFile) {
-        fileMapper.insert(id, pondFile.getType(), pondFile.getSize(), pondFile.getName(), pondFile.getData().getBytes());
+    public void insert(long id, MultipartFile multipartFile) throws IOException {
+        fileMapper.insert(id, multipartFile.getContentType(), multipartFile.getSize(),
+                multipartFile.getOriginalFilename(), Base64.getEncoder().encode(multipartFile.getBytes()));
     }
 
     public Resource getFile(long id) throws IOException {
-        Coupon coupon = couponMapper.get(id);
         Metafile metafile = fileMapper.get(id);
 
         byte[] databaseFile = metafile.getFile();

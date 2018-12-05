@@ -1,21 +1,19 @@
 package CouponOrganizer.endpoint;
 
 import CouponOrganizer.model.Coupon;
-import CouponOrganizer.model.pond.PondFile;
 import CouponOrganizer.service.CouponServiceImpl;
 import CouponOrganizer.service.CronofyServiceImpl;
 import CouponOrganizer.service.FileServiceImpl;
-import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Date;
@@ -55,14 +53,12 @@ public class CouponEndpoint {
                          @RequestParam("deal") String deal,
                          @RequestParam(value = "comment", required = false) String comment,
                          @RequestParam(value = "expirationDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date expirationDate,
-                         @RequestParam(value = "file", required = false) String file) {
+                         @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
         long id = couponService.insert(store, deal, comment, expirationDate);
         cronofyService.addEvent(store, deal, comment, expirationDate, id);
-        if (!StringUtils.isEmpty(file)) {
-            Gson gson = new Gson();
-            PondFile pondFile = gson.fromJson(file, PondFile.class);
-            fileService.insert(id, pondFile);
-            return "File " + pondFile.getName() + " successfully uploaded. <p><a href=\"index.html\">Home</a></p>";
+        if (file != null && !file.isEmpty()) {
+            fileService.insert(id, file);
+            return "File " + file.getOriginalFilename() + " successfully uploaded. <p><a href=\"index.html\">Home</a></p>";
         }
 		return "Coupon for " + store + " successfully created. <p><a href=\"index.html\">Home</a></p>";
 	}

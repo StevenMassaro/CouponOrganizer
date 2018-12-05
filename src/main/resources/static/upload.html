@@ -7,18 +7,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
     <script src="common.js"></script>
-    <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
-    <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
-
-    <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet">
-    <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
-
-    <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
-
-    <script src="https://unpkg.com/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.js"></script>
-
-    <script src="https://unpkg.com/filepond-plugin-file-encode/dist/filepond-plugin-file-encode.js"></script>
-
     <style>
         input {
             padding: 6px 10px;
@@ -36,10 +24,7 @@
             max-width: 300px;
             width: 300px;
         }
-
-
     </style>
-
 </head>
 <body>
 <div class="ui container">
@@ -68,8 +53,7 @@
         </div>
 
         <div id="fileWrapper">
-            <input type="file" name="file" id="file" class="filepond" data-max-file-size="20MB"
-                   data-max-files="1"/>
+            <input type="file" name="file" id="file"/>
         </div>
 
         <button class="ui button" type="submit" id="submit">Upload or Create</button>
@@ -78,14 +62,6 @@
 
 <script>
 	document.getElementById('insertForm').action = getApiBaseUrl("/insert");
-
-    FilePond.registerPlugin(
-      FilePondPluginImagePreview,
-      FilePondPluginImageExifOrientation,
-      FilePondPluginFileValidateSize,
-      FilePondPluginFileEncode
-    );
-    FilePond.parse(document.body);
 </script>
 </body>
 </html>
