@@ -31,17 +31,6 @@
 
 <script>
 let couponsPromise = buildLoadPromise("GET", "/list");
-
-couponsPromise.then((successMessage) => {
-	$.each(JSON.parse(successMessage), function (key, value) {
-	    $('#coupons').append(
-	        '<tr><td><a href=' + getApiBaseUrl("get") + '?id=' + value.id + '>' + value.store + '</a></td><td>' +
-	            value.deal + '</td><td>' +
-	            value.comment + '</td><td>' +
-	            (value.expirationDate ? value.expirationDate : "") + '</td><td>' +
-	            '<a href=' + getApiBaseUrl("setDateDeleted") + '?id=' + value.id +'>Mark deleted' +
-	        '</td></tr>'
-        )});
-});
+runCouponsPromise(couponsPromise);
 </script>
 </html>
