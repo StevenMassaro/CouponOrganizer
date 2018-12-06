@@ -65,7 +65,11 @@ public class CouponEndpoint {
 
 	@GetMapping("/setDateDeleted")
 	public String setDateDeleted(@RequestParam("id") long id){
+        Coupon coupon = couponService.get(id);
 		couponService.setDateDeleted(id);
+        if (coupon.getExpirationDate() != null) {
+            cronofyService.deleteEvent(coupon.getStore(), id);
+        }
 		return "Coupon ID " + id + " successfully marked as deleted. <p><a href=\"index.html\">Home</a></p>";
 
 	}

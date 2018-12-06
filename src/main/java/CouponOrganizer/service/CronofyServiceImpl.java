@@ -7,7 +7,9 @@ import org.biacode.jcronofy.api.client.CronofyClient;
 import org.biacode.jcronofy.api.client.impl.CronofyClientImpl;
 import org.biacode.jcronofy.api.model.common.CronofyResponse;
 import org.biacode.jcronofy.api.model.request.CreateOrUpdateEventRequest;
+import org.biacode.jcronofy.api.model.request.DeleteEventRequest;
 import org.biacode.jcronofy.api.model.response.CreateOrUpdateEventResponse;
+import org.biacode.jcronofy.api.model.response.DeleteEventResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +45,15 @@ public class CronofyServiceImpl {
             createOrUpdateEventRequest.setTzid(timeZone);
             CronofyResponse<CreateOrUpdateEventResponse> createOrUpdateEventResponse = cronofyClient.createOrUpdateEvent(createOrUpdateEventRequest);
         }
+    }
+
+    public void deleteEvent(String store, long id) {
+        final CronofyClient cronofyClient = new CronofyClientImpl(ClientBuilder.newBuilder().register(JacksonJsonProvider.class).build());
+        DeleteEventRequest deleteEventRequest = new DeleteEventRequest();
+        deleteEventRequest.setCalendarId(calendarId);
+        deleteEventRequest.setEventId(buildEventId(store, id));
+        deleteEventRequest.setAccessToken(accessToken);
+        CronofyResponse<DeleteEventResponse> deleteEventResponseCronofyResponse = cronofyClient.deleteEvent(deleteEventRequest);
     }
 
     private String buildDescription(String store, String deal, String comment, long id) {
