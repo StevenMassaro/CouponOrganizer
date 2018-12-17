@@ -1,17 +1,27 @@
 function runCouponsPromise(couponsPromise){
     couponsPromise.then((successMessage) => {
-        $.each(JSON.parse(successMessage), function (key, value) {
-            $('#coupons').append(
-                buildListEntry(value)
-            )});
+        $('#coupons').DataTable({
+            data: JSON.parse(successMessage),
+            "columns": [
+                {
+                    "data": "store",
+                    "render": function ( data, type, row, meta ) {
+                        return '<a href=' + getApiBaseUrl("get") + '?id=' + row.id + '>' + row.store + '</a>';
+                    }
+                },
+                {"data": "deal"},
+                {"data": "comment"},
+                {"data": "expirationDate"},
+                {
+                    "data": null,
+                    "defaultContent": "",
+                    "render": function(data,type,row,meta) {
+                        return (row.dateDeleted ? row.dateDeleted : '<a href=' + getApiBaseUrl("setDateDeleted") + '?id=' + row.id +'>Delete');
+                    }
+                }
+            ],
+            responsive: true,
+            "pageLength": 50
+        });
     });
-}
-
-function buildListEntry(value){
-    return '<tr><td><a href=' + getApiBaseUrl("get") + '?id=' + value.id + '>' + value.store + '</a></td><td>' +
-    	            value.deal + '</td><td>' +
-    	            value.comment + '</td><td>' +
-    	            (value.expirationDate ? value.expirationDate : "") + '</td><td>' +
-    	            (value.dateDeleted ? value.dateDeleted : '<a href=' + getApiBaseUrl("setDateDeleted") + '?id=' + value.id +'>Mark deleted')
-    	        '</td></tr>';
 }
