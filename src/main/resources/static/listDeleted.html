@@ -32,12 +32,6 @@
 
 <script>
 let couponsPromise = buildLoadPromise("GET", "/listDeleted");
-
-couponsPromise.then((successMessage) => {
-	$.each(JSON.parse(successMessage), function (key, value) {
-	    $('#coupons').append(
-	        '<tr><td><a href=' + window.location.origin + '/get?id=' + value.id + '>' + value.store + '</a></td><td>' + value.deal + '</td><td>' + value.comment + '</td><td>' + value.expirationDate + '</td><td>' + value.dateDeleted + '</td></tr>'
-        )});
-});
+runCouponsPromise(couponsPromise);
 </script>
 </html>
