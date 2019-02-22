@@ -14,10 +14,26 @@ public interface CouponMapper extends BaseMapper {
     String COUPON_TABLE = "coupons";
     String COUPON_SCHEMA = DATABASE + "." + COUPON_TABLE;
 
-    @Select("SELECT * FROM " + COUPON_SCHEMA + " WHERE dateDeleted is NULL")
+    @Select("SELECT *, \n" +
+            "       CASE \n" +
+            "         WHEN EXISTS (SELECT id \n" +
+            "                      FROM   coupons.FILE f \n" +
+            "                      WHERE  c.id = f.id) THEN 'TRUE' \n" +
+            "         ELSE 'FALSE' \n" +
+            "       END AS fileExists \n" +
+            "FROM   coupons.coupons c \n" +
+            "WHERE  datedeleted IS NULL ")
     List<Coupon> list();
 
-    @Select("SELECT * FROM " + COUPON_SCHEMA + " WHERE dateDeleted is not NULL")
+    @Select("SELECT *, \n" +
+            "       CASE \n" +
+            "         WHEN EXISTS (SELECT id \n" +
+            "                      FROM   coupons.FILE f \n" +
+            "                      WHERE  c.id = f.id) THEN 'TRUE' \n" +
+            "         ELSE 'FALSE' \n" +
+            "       END AS fileExists \n" +
+            "FROM   coupons.coupons c \n" +
+            "WHERE  datedeleted IS NOT NULL ")
     List<Coupon> listDeleted();
 
     @Select("INSERT INTO " + COUPON_SCHEMA +

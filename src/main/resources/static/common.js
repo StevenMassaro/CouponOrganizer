@@ -5,8 +5,10 @@ function runCouponsPromise(couponsPromise){
             "columns": [
                 {
                     "data": "store",
-                    "render": function ( data, type, row, meta ) {
-                        return '<a href=' + getApiBaseUrl("get") + '?id=' + row.id + '>' + row.store + '</a>';
+                    "render": function (data, type, row) {
+                        return row.fileExists ?
+                            '<a href=' + getApiBaseUrl("get") + '?id=' + row.id + '>' + row.store + '</a>' :
+                            row.store;
                     }
                 },
                 {"data": "deal"},

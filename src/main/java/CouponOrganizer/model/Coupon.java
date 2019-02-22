@@ -14,6 +14,7 @@ public class Coupon {
     private Date dateCreated;
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date dateDeleted;
+    private boolean fileExists;
 
 	public long getId() {
 		return id;
@@ -70,4 +71,12 @@ public class Coupon {
 	public void setDateDeleted(Date dateDeleted) {
 		this.dateDeleted = dateDeleted;
 	}
+
+    public boolean isFileExists() {
+        return fileExists;
+    }
+
+    public void setFileExists(boolean fileExists) {
+        this.fileExists = fileExists;
+    }
 }
