@@ -1,5 +1,11 @@
 package CouponOrganizer.model;
 
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.MediaType;
+
+import java.util.Base64;
+
 public class Metafile {
 
     private long id;
@@ -44,7 +50,26 @@ public class Metafile {
         return file;
     }
 
+    public byte[] getDecodedFile() {
+        return Base64.getDecoder().decode(file);
+    }
+
     public void setFile(byte[] file) {
         this.file = file;
+    }
+
+    public MediaType getMediaType() {
+        String extension = FilenameUtils.getExtension(filename);
+        if (StringUtils.containsIgnoreCase(extension, "pdf")) {
+            return MediaType.APPLICATION_PDF;
+        } else if (StringUtils.containsIgnoreCase(extension, "txt")) {
+            return MediaType.TEXT_PLAIN;
+        } else if (StringUtils.containsIgnoreCase(extension, "png")) {
+            return MediaType.IMAGE_PNG;
+        } else if (StringUtils.containsIgnoreCase(extension, "jpg") || StringUtils.containsIgnoreCase(extension, "jpeg")) {
+            return MediaType.IMAGE_JPEG;
+        } else if (StringUtils.containsIgnoreCase(extension, "gif")) {
+            return MediaType.IMAGE_GIF;
+        } else return MediaType.ALL;
     }
 }

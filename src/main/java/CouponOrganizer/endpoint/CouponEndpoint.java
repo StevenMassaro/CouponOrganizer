@@ -1,10 +1,12 @@
 package CouponOrganizer.endpoint;
 
 import CouponOrganizer.model.Coupon;
+import CouponOrganizer.model.Metafile;
 import CouponOrganizer.service.CouponServiceImpl;
 import CouponOrganizer.service.CronofyServiceImpl;
 import CouponOrganizer.service.FileServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
@@ -42,10 +44,12 @@ public class CouponEndpoint {
 	}
 
 	@GetMapping("/get")
-	public ResponseEntity<Resource> getFile(@RequestParam("id") long id) throws IOException {
-		Resource file = fileService.getFile(id);
-		return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
-				"attachment; filename=\"" + file.getFilename() + "\"").body(file);
+    public ResponseEntity<Resource> getFile(@RequestParam("id") long id) {
+        Metafile metafile = fileService.getFile(id);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + metafile.getFilename() + "\"")
+                .contentType(metafile.getMediaType())
+                .body(new ByteArrayResource(metafile.getDecodedFile()));
 	}
 
 	@PostMapping("/insert")
