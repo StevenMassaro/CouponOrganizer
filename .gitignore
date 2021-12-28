@@ -7,3 +7,4 @@ footer.forStevenSite
 _creds.php
 cacert.pem
 .user.ini
+target/*
