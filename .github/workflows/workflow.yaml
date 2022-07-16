@@ -54,8 +54,8 @@ jobs:
         with:
           context: .
           tags: |
-            stevenmassaro/CouponOrganizer:latest
-            stevenmassaro/CouponOrganizer:${{ steps.project.outputs.version }}
+            stevenmassaro/coupon-organizer:latest
+            stevenmassaro/coupon-organizer:${{ steps.project.outputs.version }}
           # build on feature branches, push only on main branch
           push: ${{ github.ref == 'refs/heads/master' }}
       - name: Image digest
