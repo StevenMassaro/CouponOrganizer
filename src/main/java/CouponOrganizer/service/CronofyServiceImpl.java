@@ -1,6 +1,7 @@
 package CouponOrganizer.service;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
+import cronofy.CronofyAPI;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.biacode.jcronofy.api.client.CronofyClient;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.client.ClientBuilder;
+import java.io.IOException;
 import java.util.Date;
 
 @Service
@@ -31,19 +33,18 @@ public class CronofyServiceImpl {
     @Value("${productionBaseUrl}")
     private String productionBaseUrl;
 
-    public void addEvent(String store, String deal, String comment, Date expirationDate, long id) {
+    public void addEvent(String store, String deal, String comment, Date expirationDate, long id) throws IOException {
         if (expirationDate != null) {
-            final CronofyClient cronofyClient = new CronofyClientImpl(ClientBuilder.newBuilder().register(JacksonJsonProvider.class).build());
-            CreateOrUpdateEventRequest createOrUpdateEventRequest = new CreateOrUpdateEventRequest();
-            createOrUpdateEventRequest.setCalendarId(calendarId);
-            createOrUpdateEventRequest.setAccessToken(accessToken);
-            createOrUpdateEventRequest.setDescription(buildDescription(store, deal, comment, id));
-            createOrUpdateEventRequest.setEventId(buildEventId(store, id));
-            createOrUpdateEventRequest.setStart(expirationDate);
-            createOrUpdateEventRequest.setEnd(getEndDate(expirationDate));
-            createOrUpdateEventRequest.setSummary(buildSummary(store));
-            createOrUpdateEventRequest.setTzid(timeZone);
-            CronofyResponse<CreateOrUpdateEventResponse> createOrUpdateEventResponse = cronofyClient.createOrUpdateEvent(createOrUpdateEventRequest);
+            final CronofyAPI ca = new CronofyAPI(accessToken);
+            ca.AddEvent(
+                    "https://api.cronofy.com/v1",
+                    calendarId,
+                    buildEventId(store, id),
+                    buildSummary(store),
+                    buildDescription(store, deal, comment, id),
+                    expirationDate,
+                    getEndDate(expirationDate)
+            );
         }
     }
 
