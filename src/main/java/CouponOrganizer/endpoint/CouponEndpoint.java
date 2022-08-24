@@ -68,7 +68,7 @@ public class CouponEndpoint {
 	}
 
 	@GetMapping("/setDateDeleted")
-	public String setDateDeleted(@RequestParam("id") long id){
+	public String setDateDeleted(@RequestParam("id") long id) throws IOException {
         Coupon coupon = couponService.get(id);
 		couponService.setDateDeleted(id);
         if (coupon.getExpirationDate() != null) {
