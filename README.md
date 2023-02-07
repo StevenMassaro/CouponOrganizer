@@ -16,3 +16,26 @@ and I probably never will. If anyone opens up any PRs, I will happily review and
 **Use this at your own risk!**
 
 Docker images available [here](https://hub.docker.com/r/stevenmassaro/coupon-organizer), for amd64 and arm64 platforms.
+
+### Cleaning up old entries from the `file` table
+
+```sql
+delete
+from file
+where id in (select c.id
+             from coupons c
+                      inner join file f on c.id = f.id
+             where c.datedeleted is not null
+               and c.datedeleted < '2022-01-01')
+```
+
+and
+
+```sql
+delete
+from coupons
+where id in (select c.id
+             from coupons c
+             where c.datedeleted is not null
+               and c.datedeleted < '2022-01-01')
+```
