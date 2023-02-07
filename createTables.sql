@@ -14,7 +14,7 @@ create table coupons.coupons (
 
 drop table if exists coupons.file;
 create table coupons.file (
-	id int not null,
+	id int not null references coupons.coupons(id) ON delete CASCADE,
 	type varchar(1000) null,
 	size int not null,
 	filename varchar(1000) not null,
