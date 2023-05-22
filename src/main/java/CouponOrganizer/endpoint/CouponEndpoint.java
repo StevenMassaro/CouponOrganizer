@@ -24,6 +24,8 @@ import java.util.List;
 @RestController
 public class CouponEndpoint {
 
+	private final static String LINKS_HTML = "<p><a href=\"list.html\">List</a></p><p><a href=\"index.html\">Home</a></p>";
+
 	@Autowired
 	private CouponServiceImpl couponService;
 
@@ -62,9 +64,9 @@ public class CouponEndpoint {
         cronofyService.addEvent(store, deal, comment, expirationDate, id);
         if (file != null && !file.isEmpty()) {
             fileService.insert(id, file);
-            return "File " + file.getOriginalFilename() + " successfully uploaded. <p><a href=\"index.html\">Home</a></p>";
+			return "File " + file.getOriginalFilename() + " successfully uploaded. " + LINKS_HTML;
         }
-		return "Coupon for " + store + " successfully created. <p><a href=\"index.html\">Home</a></p>";
+		return "Coupon for " + store + " successfully created. " + LINKS_HTML;
 	}
 
 	@GetMapping("/setDateDeleted")
@@ -74,7 +76,7 @@ public class CouponEndpoint {
         if (coupon.getExpirationDate() != null) {
             cronofyService.deleteEvent(coupon.getStore(), id);
         }
-		return "Coupon ID " + id + " successfully marked as deleted. <p><a href=\"index.html\">Home</a></p>";
+		return "Coupon ID " + id + " successfully marked as deleted. " + LINKS_HTML;
 
 	}
 }
