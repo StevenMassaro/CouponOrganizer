@@ -1,5 +1,5 @@
 <html>
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Coupon Organizer</title>
@@ -15,60 +15,171 @@
     <link rel="manifest" href="./site.webmanifest">
     <link rel="shortcut icon" href="./favicon.ico"/>
     <style>
-        input {
-            padding: 6px 10px;
-            margin: 4px;
-            box-sizing: border-box;
-        }
+      input {
+        padding: 6px 10px;
+        margin: 4px;
+        box-sizing: border-box;
+      }
 
-        #submit {
-            clear: left;
-            float: left;
-            margin-top: 70px;
-        }
+      #submit {
+        clear: left;
+        float: left;
+        margin-top: 70px;
+      }
 
-        #fileWrapper, #submit, input {
-            max-width: 300px;
-            width: 300px;
-        }
+      #fileWrapper, #submit, input {
+        max-width: 300px;
+        width: 300px;
+      }
+
+      #uploadLayout {
+        display: flex;
+        align-items: flex-start;
+      }
+
+      #formColumn {
+        flex: 0 0 auto;
+      }
+
+      #previewColumn {
+        flex: 1;
+        min-width: 0;
+        margin-left: 40px;
+      }
+
+      #preview {
+        min-height: 200px;
+        border: 2px dashed #d4d4d5;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #999;
+        padding: 10px;
+        text-align: center;
+        overflow: hidden;
+      }
+
+      #preview.has-file {
+        border-style: solid;
+        border-color: #b5b5b5;
+      }
+
+      #preview img {
+        max-width: 100%;
+        max-height: 500px;
+        object-fit: contain;
+      }
+
+      #preview embed {
+        width: 100%;
+        height: 500px;
+      }
+
+      #preview .file-info {
+        word-break: break-word;
+      }
+
+      #preview .file-info .filename {
+        font-weight: bold;
+        font-size: 1.1em;
+        margin-bottom: 8px;
+      }
     </style>
-</head>
-<body>
-<div class="ui container">
-    <p><h3 class="ui header">Upload</h3></p>
-    <p><a href="index.html">Home</a></p>
-    <br>
-    <form method="POST" id="insertForm" enctype="multipart/form-data" action="" class="ui form">
-        <div class="required field">
-            <label>Store</label>
-            <input type="text" id="store" name="store"/>
+  </head>
+  <body>
+    <div class="ui container">
+      <p>
+        <h3 class="ui header">Upload</h3>
+      </p>
+      <p><a href="index.html">Home</a></p>
+      <br>
+      <form method="POST" id="insertForm" enctype="multipart/form-data" action="" class="ui form">
+        <div id="uploadLayout">
+          <div id="formColumn">
+            <div class="required field">
+              <label>Store</label>
+              <input type="text" id="store" name="store"/>
+            </div>
+
+            <div class="required field">
+              <label>Deal</label>
+              <input type="text" id="deal" name="deal"/>
+            </div>
+
+            <div class="field">
+              <label>Comment</label>
+              <input type="text" name="comment"/>
+            </div>
+
+            <div class="field">
+              <label>Expiration Date</label>
+              <input type="date" id="expirationDate" name="expirationDate"/>
+            </div>
+
+            <div id="fileWrapper">
+              <input type="file" name="file" id="file"/>
+            </div>
+
+            <button class="ui button" type="submit" id="submit">Upload or Create</button>
+          </div>
+          <div id="previewColumn">
+            <div id="preview">
+              <span>No file selected</span>
+            </div>
+          </div>
         </div>
+      </form>
+    </div>
 
-        <div class="required field">
-            <label>Deal</label>
-            <input type="text" id="deal" name="deal"/>
-        </div>
+    <script>
+      document.getElementById('insertForm').action = getApiBaseUrl("/insert");
 
-        <div class="field">
-            <label>Comment</label>
-            <input type="text" name="comment"/>
-        </div>
+      document.getElementById('file').addEventListener('change', function(e) {
+        var preview = document.getElementById('preview');
+        preview.innerHTML = '';
+        preview.classList.remove('has-file');
 
-        <div class="field">
-            <label>Expiration Date</label>
-            <input type="date" id="expirationDate" name="expirationDate"/>
-        </div>
+        if (!e.target.files || !e.target.files.length) {
+          preview.innerHTML = '<span>No file selected</span>';
+          return;
+        }
 
-        <div id="fileWrapper">
-            <input type="file" name="file" id="file"/>
-        </div>
+        var file = e.target.files[0];
+        preview.classList.add('has-file');
 
-        <button class="ui button" type="submit" id="submit">Upload or Create</button>
-    </form>
-</div>
+        if (file.type.startsWith('image/')) {
+          var img = document.createElement('img');
+          img.src = URL.createObjectURL(file);
+          img.onload = function() { URL.revokeObjectURL(img.src); };
+          preview.appendChild(img);
+        } else if (file.type === 'application/pdf') {
+          var embed = document.createElement('embed');
+          embed.src = URL.createObjectURL(file);
+          embed.type = 'application/pdf';
+          preview.appendChild(embed);
+        } else {
+          var info = document.createElement('div');
+          info.className = 'file-info';
+          var name = document.createElement('div');
+          name.className = 'filename';
+          name.textContent = file.name;
+          info.appendChild(name);
+          var size = document.createElement('div');
+          size.textContent = formatFileSize(file.size);
+          info.appendChild(size);
+          var type = document.createElement('div');
+          type.textContent = file.type || 'unknown type';
+          info.appendChild(type);
+          preview.appendChild(info);
+        }
+      });
 
-<script>
-	document.getElementById('insertForm').action = getApiBaseUrl("/insert");
-</script>
-</body>
+      function formatFileSize(bytes) {
+        if (bytes < 1024) return bytes + ' B';
+        if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+        return (bytes / 1048576).toFixed(1) + ' MB';
+      }
+    </script>
+  </body>
 </html>
