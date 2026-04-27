@@ -50,4 +50,8 @@ public class CouponServiceImpl {
         couponMapper.restoreCoupon(id);
         return coupon;
     }
+
+    public void update(long id, String store, String deal, String comment, Date expirationDate) {
+        couponMapper.update(id, store, deal, comment, expirationDate);
+    }
 }

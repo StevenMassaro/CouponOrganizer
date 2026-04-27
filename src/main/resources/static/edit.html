@@ -1,0 +1,88 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coupon Organizer</title>
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
+    <script src="./library/common.js"></script>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+    <link rel="manifest" href="./site.webmanifest">
+    <link rel="shortcut icon" href="./favicon.ico"/>
+    <style>
+        input {
+            padding: 6px 10px;
+            margin: 4px;
+            box-sizing: border-box;
+        }
+
+        #submit {
+            clear: left;
+            float: left;
+            margin-top: 70px;
+        }
+
+        #fileWrapper, #submit, input {
+            max-width: 300px;
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+<div class="ui container">
+    <p><h3 class="ui header">Edit Coupon</h3></p>
+    <p><a href="list.html">List</a> | <a href="index.html">Home</a></p>
+    <br>
+    <form method="POST" id="editForm" enctype="multipart/form-data" action="" class="ui form">
+        <input type="hidden" name="id" id="id"/>
+        <div class="required field">
+            <label>Store</label>
+            <input type="text" id="store" name="store"/>
+        </div>
+
+        <div class="required field">
+            <label>Deal</label>
+            <input type="text" id="deal" name="deal"/>
+        </div>
+
+        <div class="field">
+            <label>Comment</label>
+            <input type="text" id="comment" name="comment"/>
+        </div>
+
+        <div class="field">
+            <label>Expiration Date</label>
+            <input type="date" id="expirationDate" name="expirationDate"/>
+        </div>
+
+        <button class="ui button" type="submit" id="submit">Update</button>
+    </form>
+</div>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const couponId = urlParams.get('id');
+
+    document.getElementById('editForm').action = getApiBaseUrl("/update");
+
+    if (couponId) {
+        document.getElementById('id').value = couponId;
+        fetch(getApiBaseUrl("/getCoupon") + '?id=' + couponId)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('store').value = data.store || '';
+                document.getElementById('deal').value = data.deal || '';
+                document.getElementById('comment').value = data.comment || '';
+                if (data.expirationDate) {
+                    document.getElementById('expirationDate').value = data.expirationDate;
+                }
+            });
+    }
+</script>
+</body>
+</html>

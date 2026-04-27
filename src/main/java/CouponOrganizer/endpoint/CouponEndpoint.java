@@ -89,4 +89,27 @@ public class CouponEndpoint {
         }
         return "Coupon ID " + id + " successfully restored. " + LINKS_HTML;
 	}
+
+    @GetMapping("/getCoupon")
+    public Coupon getCoupon(@RequestParam("id") long id) {
+        return couponService.get(id);
+    }
+
+    @PostMapping("/update")
+    public String update(@RequestParam("id") long id,
+                         @RequestParam("store") String store,
+                         @RequestParam("deal") String deal,
+                         @RequestParam(value = "comment", required = false) String comment,
+                         @RequestParam(value = "expirationDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date expirationDate) throws IOException {
+        Coupon oldCoupon = couponService.get(id);
+        if (oldCoupon.getExpirationDate() != null) {
+            cronofyService.deleteEvent(oldCoupon.getStore(), id);
+        }
+        couponService.update(id, store, deal, comment, expirationDate);
+        if (expirationDate != null) {
+            cronofyService.addEvent(store, deal,
+                    comment, expirationDate, id);
+        }
+        return "Coupon ID " + id + " successfully updated. " + LINKS_HTML;
+    }
 }

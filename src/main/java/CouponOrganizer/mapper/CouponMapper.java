@@ -56,4 +56,11 @@ public interface CouponMapper extends BaseMapper {
 
     @Update("UPDATE " + COUPON_SCHEMA + " SET dateDeleted = NULL WHERE id = #{id}")
     void restoreCoupon(@Param("id") long id);
+
+    @Update("UPDATE " + COUPON_SCHEMA + " SET \"store\" = #{store}, deal = #{deal}, \"comment\" = #{comment}, expirationDate = #{expirationDate} WHERE id = #{id}")
+    void update(@Param("id") long id,
+                @Param("store") String store,
+                @Param("deal") String deal,
+                @Param("comment") String comment,
+                @Param("expirationDate") Date expirationDate);
 }

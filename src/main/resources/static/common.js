@@ -1,36 +1,43 @@
 function runCouponsPromise(couponsPromise, showRestore){
-    couponsPromise.then((successMessage) => {
-        $('#coupons').DataTable({
-            data: JSON.parse(successMessage),
-            "columns": [
-                {
-                    "data": "store",
-                    "render": function (data, type, row) {
-                        return row.fileExists ?
-                            '<a href=' + getApiBaseUrl("get") + '?id=' + row.id + '>' + row.store + '</a>' :
-                            row.store;
-                    }
-                },
-                {"data": "deal"},
-                {"data": "comment"},
-                {"data": "expirationDate"},
-                {
-                    "data": null,
-                    "defaultContent": "",
-                    "render": function(data,type,row,meta) {
-                        return (row.dateDeleted ? row.dateDeleted : '<a href=' + getApiBaseUrl("setDateDeleted") + '?id=' + row.id +'>Delete');
-                    }
-                },
-                ...(showRestore ? [{
-                    "data": null,
-                    "defaultContent": "",
-                    "render": function(data, type, row, meta) {
-                        return '<a href=' + getApiBaseUrl("restore") + '?id=' + row.id + '>Restore';
-                    }
-                }] : [])
-            ],
-            responsive: true,
-            "pageLength": 50
-        });
-    });
+couponsPromise.then((successMessage) => {
+ $('#coupons').DataTable({
+ data: JSON.parse(successMessage),
+ "columns": [
+  {
+   "data": "store",
+   "render": function (data, type, row) {
+    return row.fileExists ?
+     '<a href=' + getApiBaseUrl("get") + '?id=' + row.id + '>' + row.store + '</a>' :
+     row.store;
+   }
+  },
+  {"data": "deal"},
+  {"data": "comment"},
+  {"data": "expirationDate"},
+  {
+   "data": null,
+   "defaultContent": "",
+   "render": function(data,type,row,meta) {
+    return (row.dateDeleted ? row.dateDeleted : '<a href=' + getApiBaseUrl("setDateDeleted") + '?id=' + row.id +'>Delete');
+   }
+  },
+  {
+   "data": null,
+   "defaultContent": "",
+   "render": function(data, type, row, meta) {
+    return (!row.dateDeleted ? '<a href="edit.html?id=' + row.id + '">Edit</a>' : '');
+   }
+  },
+  ...(showRestore ? [{
+   "data": null,
+   "defaultContent": "",
+   "render": function(data, type, row, meta) {
+    return '<a href=' + getApiBaseUrl("restore") + '?id=' + row.id + '>Restore';
+   }
+  }] : [])
+ ],
+ responsive: true,
+ "pageLength": 50
+ });
+});
 }
