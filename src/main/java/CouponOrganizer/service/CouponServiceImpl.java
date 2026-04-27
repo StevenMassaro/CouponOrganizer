@@ -44,4 +44,10 @@ public class CouponServiceImpl {
     public void setDateDeleted(long id) {
         couponMapper.setDateDeleted(new Date(), id);
     }
+
+    public Coupon restoreCoupon(long id) {
+        Coupon coupon = couponMapper.get(id);
+        couponMapper.restoreCoupon(id);
+        return coupon;
+    }
 }

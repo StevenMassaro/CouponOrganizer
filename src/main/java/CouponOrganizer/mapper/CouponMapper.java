@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.Date;
 import java.util.List;
@@ -52,4 +53,7 @@ public interface CouponMapper extends BaseMapper {
     @Delete("UPDATE " + COUPON_SCHEMA + " SET dateDeleted = #{dateDeleted} WHERE id = #{id}")
     void setDateDeleted(@Param("dateDeleted") Date dateDeleted,
                         @Param("id") long id);
+
+    @Update("UPDATE " + COUPON_SCHEMA + " SET dateDeleted = NULL WHERE id = #{id}")
+    void restoreCoupon(@Param("id") long id);
 }

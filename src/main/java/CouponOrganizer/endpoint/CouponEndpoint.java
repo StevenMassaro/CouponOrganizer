@@ -79,4 +79,14 @@ public class CouponEndpoint {
 		return "Coupon ID " + id + " successfully marked as deleted. " + LINKS_HTML;
 
 	}
+
+	@GetMapping("/restore")
+	public String restoreCoupon(@RequestParam("id") long id) throws IOException {
+        Coupon coupon = couponService.restoreCoupon(id);
+        if (coupon.getExpirationDate() != null) {
+            cronofyService.addEvent(coupon.getStore(), coupon.getDeal(),
+                                   coupon.getComment(), coupon.getExpirationDate(), id);
+        }
+        return "Coupon ID " + id + " successfully restored. " + LINKS_HTML;
+	}
 }

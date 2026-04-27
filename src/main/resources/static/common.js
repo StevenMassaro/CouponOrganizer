@@ -20,6 +20,13 @@ function runCouponsPromise(couponsPromise){
                     "render": function(data,type,row,meta) {
                         return (row.dateDeleted ? row.dateDeleted : '<a href=' + getApiBaseUrl("setDateDeleted") + '?id=' + row.id +'>Delete');
                     }
+                },
+                {
+                    "data": null,
+                    "defaultContent": "",
+                    "render": function(data, type, row, meta) {
+                        return (row.dateDeleted ? '<a href=' + getApiBaseUrl("restore") + '?id=' + row.id + '>Restore' : '');
+                    }
                 }
             ],
             responsive: true,
