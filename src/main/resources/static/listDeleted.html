@@ -44,7 +44,6 @@
                 <th>Comment</th>
                 <th>Expiration date</th>
                 <th>Date deleted</th>
-                <th>Edit</th>
                 <th>Restore</th>
             </tr>
             </thead>
@@ -54,6 +53,6 @@
 
 <script>
     let couponsPromise = buildLoadPromise("GET", "/listDeleted");
-    runCouponsPromise(couponsPromise, true);
+    runCouponsPromise(couponsPromise, true, false);
 </script>
 </html>
