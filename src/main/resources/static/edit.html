@@ -16,28 +16,33 @@
     <link rel="shortcut icon" href="./favicon.ico"/>
     <style>
         input {
-            padding: 6px 10px;
-            margin: 4px;
-            box-sizing: border-box;
+        padding: 6px 10px;
+        margin: 4px;
+        box-sizing: border-box;
         }
 
         #submit {
-            clear: left;
-            float: left;
-            margin-top: 70px;
+        clear: left;
+        float: left;
+        margin-top: 70px;
         }
 
         #fileWrapper, #submit, input {
-            max-width: 300px;
-            width: 300px;
+        max-width: 300px;
+        width: 300px;
         }
     </style>
 </head>
 <body>
 <div class="ui container">
-    <p><h3 class="ui header">Edit Coupon</h3></p>
-    <p><a href="list.html">List</a> | <a href="index.html">Home</a></p>
-    <br>
+    <div class="ui secondary menu">
+        <a class="item" href="index.html">Home</a>
+        <a class="item" href="upload.html">Upload</a>
+        <a class="active item" href="list.html">List</a>
+        <a class="item" href="listDeleted.html">Deleted</a>
+        <a class="item" href="actions.html">Actions</a>
+    </div>
+    <h3 class="ui header">Edit Coupon</h3>
     <form method="POST" id="editForm" enctype="multipart/form-data" action="" class="ui form">
         <input type="hidden" name="id" id="id"/>
         <div class="required field">
@@ -62,13 +67,12 @@
 
         <button class="ui button" type="submit" id="submit">Update</button>
     </form>
+    <div id="editMessage" class="ui hidden message"></div>
 </div>
 
 <script>
     const urlParams = new URLSearchParams(window.location.search);
     const couponId = urlParams.get('id');
-
-    document.getElementById('editForm').action = getApiBaseUrl("/update");
 
     if (couponId) {
         document.getElementById('id').value = couponId;
@@ -83,6 +87,47 @@
                 }
             });
     }
+
+    document.getElementById('editForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var form = this;
+        var formData = new FormData(form);
+        var submitBtn = document.getElementById('submit');
+        submitBtn.classList.add('loading');
+        submitBtn.disabled = true;
+
+        fetch(getApiBaseUrl("/update"), {
+                method: 'POST',
+                body: formData
+            })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                submitBtn.classList.remove('loading');
+                submitBtn.disabled = false;
+                var msgDiv = document.getElementById('editMessage');
+                msgDiv.classList.remove('hidden', 'error', 'positive');
+                if (data.success) {
+                    msgDiv.classList.add('positive');
+                    msgDiv.innerHTML = '<div class="header">Success</div><p>' + data.message + '</p>';
+                } else {
+                    msgDiv.classList.add('error');
+                    msgDiv.innerHTML = '<div class="header">Error</div><p>' + data.message + '</p>';
+                }
+                msgDiv.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            })
+            .catch(function(err) {
+                submitBtn.classList.remove('loading');
+                submitBtn.disabled = false;
+                var msgDiv = document.getElementById('editMessage');
+                msgDiv.classList.remove('hidden', 'positive');
+                msgDiv.classList.add('error');
+                msgDiv.innerHTML = '<div class="header">Error</div><p>Update failed. Please try again.</p>';
+            });
+    });
 </script>
 </body>
 </html>

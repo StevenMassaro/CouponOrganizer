@@ -1,5 +1,5 @@
 <html>
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Coupon Organizer</title>
@@ -15,39 +15,39 @@
     <link rel="manifest" href="./site.webmanifest">
     <link rel="shortcut icon" href="./favicon.ico"/>
     <style>
-      input {
+        input {
         padding: 6px 10px;
         margin: 4px;
         box-sizing: border-box;
-      }
+        }
 
-      #submit {
+        #submit {
         clear: left;
         float: left;
         margin-top: 70px;
-      }
+        }
 
-      #fileWrapper, #submit, input {
+        #fileWrapper, #submit, input {
         max-width: 300px;
         width: 300px;
-      }
+        }
 
-      #uploadLayout {
+        #uploadLayout {
         display: flex;
         align-items: flex-start;
-      }
+        }
 
-      #formColumn {
+        #formColumn {
         flex: 0 0 auto;
-      }
+        }
 
-      #previewColumn {
+        #previewColumn {
         flex: 1;
         min-width: 0;
         margin-left: 40px;
-      }
+        }
 
-      #preview {
+        #preview {
         min-height: calc(95vh - 100px);
         border: 2px dashed #d4d4d5;
         border-radius: 4px;
@@ -58,139 +58,187 @@
         padding: 10px;
         text-align: center;
         overflow: hidden;
-      }
+        }
 
-      #preview.has-file {
+        #preview.has-file {
         border-style: solid;
         border-color: #b5b5b5;
-      }
+        }
 
-      #preview img {
+        #preview img {
         max-width: 100%;
         max-height: 500px;
         object-fit: contain;
-      }
+        }
 
-      #preview embed {
+        #preview embed {
         width: 100%;
         height: 500px;
-      }
+        }
 
-      #preview .file-info {
+        #preview .file-info {
         word-break: break-word;
-      }
+        }
 
-      #preview .file-info .filename {
+        #preview .file-info .filename {
         font-weight: bold;
         font-size: 1.1em;
         margin-bottom: 8px;
-      }
+        }
 
-      @media (max-width: 767px) {
+        @media (max-width: 767px) {
         #uploadLayout {
-          flex-direction: column;
+        flex-direction: column;
         }
 
         #previewColumn {
-          margin-left: 0;
-          margin-top: 20px;
+        margin-left: 0;
+        margin-top: 20px;
         }
-      }
+        }
     </style>
-  </head>
-  <body>
-    <div class="ui container">
-      <p>
-        <h3 class="ui header">Upload</h3>
-      </p>
-      <p><a href="index.html">Home</a></p>
-      <br>
-      <form method="POST" id="insertForm" enctype="multipart/form-data" action="" class="ui form">
-        <div id="uploadLayout">
-          <div id="formColumn">
-            <div class="required field">
-              <label>Store</label>
-              <input type="text" id="store" name="store"/>
-            </div>
-
-            <div class="required field">
-              <label>Deal</label>
-              <input type="text" id="deal" name="deal"/>
-            </div>
-
-            <div class="field">
-              <label>Comment</label>
-              <input type="text" name="comment"/>
-            </div>
-
-            <div class="field">
-              <label>Expiration Date</label>
-              <input type="date" id="expirationDate" name="expirationDate"/>
-            </div>
-
-            <div id="fileWrapper">
-              <input type="file" name="file" id="file"/>
-            </div>
-
-            <button class="ui button" type="submit" id="submit">Upload or Create</button>
-          </div>
-          <div id="previewColumn">
-            <div id="preview">
-              <span>No file selected</span>
-            </div>
-          </div>
-        </div>
-      </form>
+</head>
+<body>
+<div class="ui container">
+    <div class="ui secondary menu">
+        <a class="item" href="index.html">Home</a>
+        <a class="active item" href="upload.html">Upload</a>
+        <a class="item" href="list.html">List</a>
+        <a class="item" href="listDeleted.html">Deleted</a>
+        <a class="item" href="actions.html">Actions</a>
     </div>
+    <h3 class="ui header">Upload</h3>
+    <form method="POST" id="insertForm" enctype="multipart/form-data" action="" class="ui form">
+        <div id="uploadLayout">
+            <div id="formColumn">
+                <div class="required field">
+                    <label>Store</label>
+                    <input type="text" id="store" name="store"/>
+                </div>
 
-    <script>
-      document.getElementById('insertForm').action = getApiBaseUrl("/insert");
+                <div class="required field">
+                    <label>Deal</label>
+                    <input type="text" id="deal" name="deal"/>
+                </div>
 
-      document.getElementById('file').addEventListener('change', function(e) {
+                <div class="field">
+                    <label>Comment</label>
+                    <input type="text" name="comment"/>
+                </div>
+
+                <div class="field">
+                    <label>Expiration Date</label>
+                    <input type="date" id="expirationDate" name="expirationDate"/>
+                </div>
+
+                <div id="fileWrapper">
+                    <input type="file" name="file" id="file"/>
+                </div>
+
+                <button class="ui button" type="submit" id="submit">Upload or Create</button>
+            </div>
+            <div id="previewColumn">
+                <div id="preview">
+                    <span>No file selected</span>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div id="uploadMessage" class="ui hidden message"></div>
+</div>
+
+<script>
+    document.getElementById('insertForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var form = this;
+        var formData = new FormData(form);
+        var submitBtn = document.getElementById('submit');
+        submitBtn.classList.add('loading');
+        submitBtn.disabled = true;
+
+        fetch(getApiBaseUrl("/insert"), {
+                method: 'POST',
+                body: formData
+            })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                submitBtn.classList.remove('loading');
+                submitBtn.disabled = false;
+                var msgDiv = document.getElementById('uploadMessage');
+                msgDiv.classList.remove('hidden', 'error', 'positive');
+                if (data.success) {
+                    msgDiv.classList.add('positive');
+                    msgDiv.innerHTML = '<div class="header">Success</div><p>' + data.message + '</p>';
+                    form.reset();
+                    document.getElementById('preview').innerHTML = '<span>No file selected</span>';
+                    document.getElementById('preview').classList.remove('has-file');
+                } else {
+                    msgDiv.classList.add('error');
+                    msgDiv.innerHTML = '<div class="header">Error</div><p>' + data.message + '</p>';
+                }
+                msgDiv.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            })
+            .catch(function(err) {
+                submitBtn.classList.remove('loading');
+                submitBtn.disabled = false;
+                var msgDiv = document.getElementById('uploadMessage');
+                msgDiv.classList.remove('hidden', 'positive');
+                msgDiv.classList.add('error');
+                msgDiv.innerHTML = '<div class="header">Error</div><p>Upload failed. Please try again.</p>';
+            });
+    });
+
+    document.getElementById('file').addEventListener('change', function(e) {
         var preview = document.getElementById('preview');
         preview.innerHTML = '';
         preview.classList.remove('has-file');
 
         if (!e.target.files || !e.target.files.length) {
-          preview.innerHTML = '<span>No file selected</span>';
-          return;
+            preview.innerHTML = '<span>No file selected</span>';
+            return;
         }
 
         var file = e.target.files[0];
         preview.classList.add('has-file');
 
         if (file.type.startsWith('image/')) {
-          var img = document.createElement('img');
-          img.src = URL.createObjectURL(file);
-          img.onload = function() { URL.revokeObjectURL(img.src); };
-          preview.appendChild(img);
+            var img = document.createElement('img');
+            img.src = URL.createObjectURL(file);
+            img.onload = function() {
+                URL.revokeObjectURL(img.src);
+            };
+            preview.appendChild(img);
         } else if (file.type === 'application/pdf') {
-          var embed = document.createElement('embed');
-          embed.src = URL.createObjectURL(file);
-          embed.type = 'application/pdf';
-          preview.appendChild(embed);
+            var embed = document.createElement('embed');
+            embed.src = URL.createObjectURL(file);
+            embed.type = 'application/pdf';
+            preview.appendChild(embed);
         } else {
-          var info = document.createElement('div');
-          info.className = 'file-info';
-          var name = document.createElement('div');
-          name.className = 'filename';
-          name.textContent = file.name;
-          info.appendChild(name);
-          var size = document.createElement('div');
-          size.textContent = formatFileSize(file.size);
-          info.appendChild(size);
-          var type = document.createElement('div');
-          type.textContent = file.type || 'unknown type';
-          info.appendChild(type);
-          preview.appendChild(info);
+            var info = document.createElement('div');
+            info.className = 'file-info';
+            var name = document.createElement('div');
+            name.className = 'filename';
+            name.textContent = file.name;
+            info.appendChild(name);
+            var size = document.createElement('div');
+            size.textContent = formatFileSize(file.size);
+            info.appendChild(size);
+            var type = document.createElement('div');
+            type.textContent = file.type || 'unknown type';
+            info.appendChild(type);
+            preview.appendChild(info);
         }
-      });
+    });
 
-      function formatFileSize(bytes) {
+    function formatFileSize(bytes) {
         if (bytes < 1024) return bytes + ' B';
         if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
         return (bytes / 1048576).toFixed(1) + ' MB';
-      }
-    </script>
-  </body>
+    }
+</script>
+</body>
 </html>

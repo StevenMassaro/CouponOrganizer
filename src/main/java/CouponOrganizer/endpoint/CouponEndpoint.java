@@ -1,5 +1,6 @@
 package CouponOrganizer.endpoint;
 
+import CouponOrganizer.model.ApiResponse;
 import CouponOrganizer.model.Coupon;
 import CouponOrganizer.model.Metafile;
 import CouponOrganizer.service.CouponServiceImpl;
@@ -24,71 +25,68 @@ import java.util.List;
 @RestController
 public class CouponEndpoint {
 
-	private final static String LINKS_HTML = "<p><a href=\"list.html\">List</a></p><p><a href=\"index.html\">Home</a></p>";
+    @Autowired
+    private CouponServiceImpl couponService;
 
-	@Autowired
-	private CouponServiceImpl couponService;
-
-	@Autowired
+    @Autowired
     private FileServiceImpl fileService;
 
-	@Autowired
-	private CronofyServiceImpl cronofyService;
+    @Autowired
+    private CronofyServiceImpl cronofyService;
 
-	@GetMapping("/list")
-	public List<Coupon> list(){
-		return couponService.list();
-	}
+    @GetMapping("/list")
+    public List<Coupon> list(){
+        return couponService.list();
+    }
 
-	@GetMapping("/listDeleted")
-	public List<Coupon> listDeleted(){
-		return couponService.listDeleted();
-	}
+    @GetMapping("/listDeleted")
+    public List<Coupon> listDeleted(){
+        return couponService.listDeleted();
+    }
 
-	@GetMapping("/get")
+    @GetMapping("/get")
     public ResponseEntity<Resource> getFile(@RequestParam("id") long id) {
         Metafile metafile = fileService.getFile(id);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + metafile.getFilename() + "\"")
                 .contentType(metafile.getMediaType())
                 .body(new ByteArrayResource(metafile.getDecodedFile()));
-	}
+    }
 
-	@PostMapping("/insert")
-	public String insert(@RequestParam("store") String store,
-                         @RequestParam("deal") String deal,
-                         @RequestParam(value = "comment", required = false) String comment,
-                         @RequestParam(value = "expirationDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date expirationDate,
-                         @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
+    @PostMapping("/insert")
+    public ApiResponse insert(@RequestParam("store") String store,
+                              @RequestParam("deal") String deal,
+                              @RequestParam(value = "comment", required = false) String comment,
+                              @RequestParam(value = "expirationDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date expirationDate,
+                              @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
         long id = couponService.insert(store, deal, comment, expirationDate);
         cronofyService.addEvent(store, deal, comment, expirationDate, id);
         if (file != null && !file.isEmpty()) {
             fileService.insert(id, file);
-			return "File " + file.getOriginalFilename() + " successfully uploaded. " + LINKS_HTML;
+            return new ApiResponse(true, "File " + file.getOriginalFilename() + " successfully uploaded.");
         }
-		return "Coupon for " + store + " successfully created. " + LINKS_HTML;
-	}
+        return new ApiResponse(true, "Coupon for " + store + " successfully created.");
+    }
 
-	@GetMapping("/setDateDeleted")
-	public String setDateDeleted(@RequestParam("id") long id) throws IOException {
+    @GetMapping("/setDateDeleted")
+    public ApiResponse setDateDeleted(@RequestParam("id") long id) throws IOException {
         Coupon coupon = couponService.get(id);
-		couponService.setDateDeleted(id);
+        couponService.setDateDeleted(id);
         if (coupon.getExpirationDate() != null) {
             cronofyService.deleteEvent(coupon.getStore(), id);
         }
-		return "Coupon ID " + id + " successfully marked as deleted. " + LINKS_HTML;
+        return new ApiResponse(true, "Coupon ID " + id + " successfully marked as deleted.");
+    }
 
-	}
-
-	@GetMapping("/restore")
-	public String restoreCoupon(@RequestParam("id") long id) throws IOException {
+    @GetMapping("/restore")
+    public ApiResponse restoreCoupon(@RequestParam("id") long id) throws IOException {
         Coupon coupon = couponService.restoreCoupon(id);
         if (coupon.getExpirationDate() != null) {
             cronofyService.addEvent(coupon.getStore(), coupon.getDeal(),
-                                   coupon.getComment(), coupon.getExpirationDate(), id);
+                    coupon.getComment(), coupon.getExpirationDate(), id);
         }
-        return "Coupon ID " + id + " successfully restored. " + LINKS_HTML;
-	}
+        return new ApiResponse(true, "Coupon ID " + id + " successfully restored.");
+    }
 
     @GetMapping("/getCoupon")
     public Coupon getCoupon(@RequestParam("id") long id) {
@@ -96,11 +94,11 @@ public class CouponEndpoint {
     }
 
     @PostMapping("/update")
-    public String update(@RequestParam("id") long id,
-                         @RequestParam("store") String store,
-                         @RequestParam("deal") String deal,
-                         @RequestParam(value = "comment", required = false) String comment,
-                         @RequestParam(value = "expirationDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date expirationDate) throws IOException {
+    public ApiResponse update(@RequestParam("id") long id,
+                              @RequestParam("store") String store,
+                              @RequestParam("deal") String deal,
+                              @RequestParam(value = "comment", required = false) String comment,
+                              @RequestParam(value = "expirationDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date expirationDate) throws IOException {
         Coupon oldCoupon = couponService.get(id);
         if (oldCoupon.getExpirationDate() != null) {
             cronofyService.deleteEvent(oldCoupon.getStore(), id);
@@ -110,6 +108,6 @@ public class CouponEndpoint {
             cronofyService.addEvent(store, deal,
                     comment, expirationDate, id);
         }
-        return "Coupon ID " + id + " successfully updated. " + LINKS_HTML;
+        return new ApiResponse(true, "Coupon ID " + id + " successfully updated.");
     }
 }

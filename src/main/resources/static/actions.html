@@ -18,16 +18,51 @@
 </head>
 <body>
 <div class="ui container">
+    <div class="ui secondary menu">
+        <a class="item" href="index.html">Home</a>
+        <a class="item" href="upload.html">Upload</a>
+        <a class="item" href="list.html">List</a>
+        <a class="item" href="listDeleted.html">Deleted</a>
+        <a class="active item" href="actions.html">Actions</a>
+    </div>
+    <h3 class="ui header">Actions</h3>
     <p>
-    <h3 class="ui header">Actions</h3></p>
-    <p><a href="#" id="updateCronofy">Update Cronofy</a></p>
-    <br>
-    <p><a href="index.html">Home</a></p>
+        <button class="ui button" id="updateCronofyBtn">Update Cronofy</button>
+    </p>
+    <div id="cronofyMessage" class="ui hidden message"></div>
 </div>
 
 <script>
-	document.getElementById('updateCronofy').href = getApiBaseUrl("updateCronofy");
-
+    document.getElementById('updateCronofyBtn').addEventListener('click', function() {
+        var btn = this;
+        btn.classList.add('loading');
+        btn.disabled = true;
+        fetch(getApiBaseUrl("updateCronofy"))
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                btn.classList.remove('loading');
+                btn.disabled = false;
+                var msgDiv = document.getElementById('cronofyMessage');
+                msgDiv.classList.remove('hidden', 'error', 'positive');
+                if (data.success) {
+                    msgDiv.classList.add('positive');
+                    msgDiv.innerHTML = '<div class="header">Success</div><p>' + data.message + '</p>';
+                } else {
+                    msgDiv.classList.add('error');
+                    msgDiv.innerHTML = '<div class="header">Error</div><p>' + data.message + '</p>';
+                }
+            })
+            .catch(function(err) {
+                btn.classList.remove('loading');
+                btn.disabled = false;
+                var msgDiv = document.getElementById('cronofyMessage');
+                msgDiv.classList.remove('hidden', 'positive');
+                msgDiv.classList.add('error');
+                msgDiv.innerHTML = '<div class="header">Error</div><p>Update failed.</p>';
+            });
+    });
 </script>
 
 </body>

@@ -1,5 +1,6 @@
 package CouponOrganizer.service;
 
+import CouponOrganizer.model.ApiResponse;
 import CouponOrganizer.model.Coupon;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class ActionsServiceImpl {
     @Autowired
     private CronofyServiceImpl cronofyService;
 
-    public String updateCronofy() {
+    public ApiResponse updateCronofy() {
         List<Coupon> coupons = couponService.list();
         List<Long> updatedEvents = new ArrayList<>();
         for (Coupon coupon : coupons) {
@@ -29,6 +30,6 @@ public class ActionsServiceImpl {
             }
             updatedEvents.add(coupon.getId());
         }
-        return "Updated events in Cronofy for coupons: " + StringUtils.join(updatedEvents, ", ") + "<p><a href=\"index.html\">Home</a></p>";
+        return new ApiResponse(true, "Updated events in Cronofy for coupons: " + StringUtils.join(updatedEvents, ", "));
     }
 }

@@ -3,11 +3,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Coupon Organizer</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
     <link rel="stylesheet" type="text/css"
           href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
 
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"/>
@@ -28,7 +27,14 @@
 </head>
 <body>
 <div class="ui container">
-    <p><h3 class="ui header">Deleted coupons</h3></p>
+    <div class="ui secondary menu">
+        <a class="item" href="index.html">Home</a>
+        <a class="item" href="upload.html">Upload</a>
+        <a class="item" href="list.html">List</a>
+        <a class="active item" href="listDeleted.html">Deleted</a>
+        <a class="item" href="actions.html">Actions</a>
+    </div>
+    <h3 class="ui header">Deleted coupons</h3>
     <div>
         <table id="coupons" border='1' class="display cell-border" cellspacing="0" width="100%">
             <thead>
@@ -44,14 +50,10 @@
             </thead>
         </table>
     </div>
-    <div>
-        <p><a href="index.html">Home</a></p>
-    </div>
 </div>
-</body>
 
 <script>
-let couponsPromise = buildLoadPromise("GET", "/listDeleted");
-runCouponsPromise(couponsPromise, true);
+    let couponsPromise = buildLoadPromise("GET", "/listDeleted");
+    runCouponsPromise(couponsPromise, true);
 </script>
 </html>
